@@ -57,3 +57,7 @@ int ProcessSerialInput(){
 return 0;
 }
 
+int GetCount(){
+
+return 0;
+}
