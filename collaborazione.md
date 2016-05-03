@@ -21,6 +21,14 @@ Eseguire il comando:
 Verrà creata una directory con il contenuto del progetto come esiste su Github nell'account personale creato all'inizio. Adesso è possibile lavorare in locale usando gli strumenti di sviluppo preferiti.
 
 
+
+Come sincronizzare un fork con server remoto upstream
+http://stackoverflow.com/questions/7244321/how-do-i-update-a-github-forked-repository?lq=1
+
+
+
+
+
 cose da installare
 
 git
