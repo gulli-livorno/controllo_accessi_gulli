@@ -7,7 +7,7 @@
 - [Git - distributed version control system ] (https://git-scm.com/)
 
 ### Clonare un progetto Github su Github
-Dopo aver eseguito l'accesso con il proprio account Github cercare il repository principale di progetto *controllo_accessi_gulli* ed eseguire un Fork del repository.
+Dopo aver eseguito l'accesso con il proprio account Github cercare il repository principale di progetto *controllo_accessi_gulli* ed eseguire un **Fork** del repository.
 Questo creerà una copia del repository sul proprio account Github. E' già possibile lavorare al progetto on-line andando a modificare i singoli file.
 #### Fare il committ di un file modificato
 Quando un file è stato modificato è possibile registrare le modifiche per creare una storia del progetto. Per farlo esiste il tasto **[ Commit Changes ]** in fondo all'editor. E' buona norma inserire un messaggio di commit per ricordarsi quali modifiche sono state fatte sul file.
@@ -39,6 +39,15 @@ in questo modo abbiamo aggiunto un repository remoto con il nome *upstream*. Qua
 
 `git rebase origin/master ( applica le variazioni al repository locale )`
 
+adesso è necessario aggiornare il proprio repository su Github  con il comando:
+
+`git push origin/master`
+
+### Sottoporre una richiesta di Pull request
+Quando è stato fatto del lavoro di sviluppo su una parte del codice e si desidera che questa venga  incorporata nel progetto principale e necessario eseguire l'operazione di **pull request** dal proprio account Github verso il repository di cui abbiamo fatto il Fork all'inizio (il repository principale di progetto).
+
+
+https://help.github.com/articles/using-pull-requests/
 
 
 
