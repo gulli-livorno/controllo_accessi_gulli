@@ -16,7 +16,7 @@ Questo creerà una copia del repository sul proprio account Github. E' già poss
 
 :warning: *Per lo sviluppo di SW comunque non è indicato lavorare direttamente sul repository on line ma è preferibile lavorare su una copia locale e poi aggiornare il repository remoto*. Vedi punto 4.
 
-####  a. Fare il **commit** di un file modificato
+####  3a. Fare il **commit** di un file modificato
 Quando un file è stato modificato è possibile registrare le modifiche per creare una storia del progetto. Per farlo esiste il tasto **[ Commit Changes ]** in fondo all'editor. E' buona norma inserire un messaggio di commit per ricordarsi quali modifiche sono state fatte sul file. Su Github per salvare le modifiche ad un file è comunque necessario fare un commit.
 
 ___
@@ -29,11 +29,11 @@ Eseguire il comando:
  
  dove *git_hub_user_name* è lo user name dell'account Github creato in precedenza.
 Sarà creata una directory con il contenuto del progetto come esiste su Github nell'account personale creato all'inizio. Adesso è possibile lavorare in locale usando gli strumenti di sviluppo preferiti.
-####    a. Fare il committ di un file modificato
+####    4a. Fare il committ di un file modificato
 Quando un file è stato modificato ed un piccolo progresso od obiettivo sono stati raggiunti si possono registrare le modifiche per creare una storia del progetto nel repository locale. Eseguire il comando:
 `git commit -a -m "messaggio di commit"`
 
-####    b. Aggiornare il proprio repository su Github con il lavoro fatto in locale
+####    4b. Aggiornare il proprio repository su Github con il lavoro fatto in locale
 eseguire il comando `git push origin/master`. In questo modo il repository remoto sarà sincronizzato con quello locale (saranno richiesti user name e password del vostro account github per l'operazione di **push**).
 
 ___
