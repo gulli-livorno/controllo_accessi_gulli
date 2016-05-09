@@ -13,8 +13,11 @@ __History__: (repeat the following line as many times as applicable)
 ***************************************************************************
 */
 
+//************************************Implementazione Funzioni Globali ****************************************//
 
-
+/* funzione int IsBarrierCrossed(NewPing sonar):
+Controlla se una barriera sonar è stata attraversata correttamente.
+*/
 bool IsBarrierCrossed(NewPing sonar) {
 
 //TODO: vedi specifiche in .docs/IsBarrierCrossed.pdf
@@ -22,7 +25,11 @@ return false;
 
   }
 
-  int ReadSonars(){
+
+/* funzione  byte ReadSonars():
+Restituisce la codifica dello stato delle due barriere sonar:
+*/
+  byte ReadSonars(){
 
 //TODO: vedi specifiche in .docs/ReadSonar.pdf
 
