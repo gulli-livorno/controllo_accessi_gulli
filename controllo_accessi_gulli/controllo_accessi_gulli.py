@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 #*********************Python module file header******************************
-__doc__ = """ Script Python che gira su PC o raspberry.
-Rimane in attesa sulla porta seriale di un com,ando trasmesso da Arduino in base allo stato
+__doc__ = """ Script Python che gira su PC o RaspberryPi.
+Rimane in attesa sulla porta seriale di un comando trasmesso da Arduino in base allo stato
 della macchina conta accessi:
 (es. comandi di un carattere)
 i= ingresso avvenuto
