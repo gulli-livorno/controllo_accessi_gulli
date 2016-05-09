@@ -10,7 +10,8 @@
 
 ### :white_small_square: 3.  Clonare un progetto Github su Github
 Dopo aver eseguito l'accesso con il proprio account Github cercare il repository principale di progetto *controllo_accessi_gulli* ed eseguire un **Fork** del repository.
-Questo creerà una copia del repository sul proprio account Github. E' già possibile lavorare al progetto on-line andando a modificare i singoli file anche se per lo sviluppo di SW non è opportuno lavorare direttamente sul repository on line ma è preferibile lavorare su una copia locale e poi aggiornare il repository remoto. Vedi punto 4.
+Questo creerà una copia del repository sul proprio account Github. E' già possibile lavorare al progetto on-line andando a modificare i singoli file
+[ :warning: *Per lo sviluppo di SW comunque non è indicato lavorare direttamente sul repository on line ma è preferibile lavorare su una copia locale e poi aggiornare il repository remoto*. :warning: Vedi punto 4.]
 ####  a. Fare il **commit** di un file modificato
 Quando un file è stato modificato è possibile registrare le modifiche per creare una storia del progetto. Per farlo esiste il tasto **[ Commit Changes ]** in fondo all'editor. E' buona norma inserire un messaggio di commit per ricordarsi quali modifiche sono state fatte sul file. Su Github per salvare le modifiche ad un file è comunque necessario fa un commit.
 
