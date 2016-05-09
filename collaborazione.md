@@ -4,8 +4,9 @@
 
 ### :large_blue_circle: 2. SW da scaricare sul proprio PC
 
-- [Arduino IDE SW ] (https://www.arduino.cc/en/Main/Software)
+- [Arduino IDE SW ] (https://www.arduino.cc/en/Main/Software) (:raised_hand: chi ha già scritto e compilato almeno uno sketch su Arduino ce lo dovrebbe già avere )
 - [Git - distributed version control system ] (https://git-scm.com/)
+- [Una semlpice guida a Git ] (http://rogerdudler.github.io/git-guide/index.it.html)
 
 ### :large_blue_circle: 3.  Clonare un progetto Github su Github
 Dopo aver eseguito l'accesso con il proprio account Github cercare il repository principale di progetto *controllo_accessi_gulli* ed eseguire un **Fork** del repository.
