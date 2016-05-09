@@ -10,7 +10,7 @@
 
 ### :white_small_square: 3.  Clonare un progetto Github su Github
 Dopo aver eseguito l'accesso con il proprio account Github cercare il repository principale di progetto *controllo_accessi_gulli* ed eseguire un **Fork** del repository.
-Questo creerà una copia del repository sul proprio account Github. E' già possibile lavorare al progetto on-line andando a modificare i singoli file
+Questo creerà una copia del repository sul proprio account Github. E' già possibile lavorare al progetto on-line andando a modificare i singoli file.
 
 :warning: *Per lo sviluppo di SW comunque non è indicato lavorare direttamente sul repository on line ma è preferibile lavorare su una copia locale e poi aggiornare il repository remoto*. Vedi punto 4.
 
@@ -32,7 +32,7 @@ Quando un file è stato modificato ed un piccolo progresso od obiettivo sono sta
 `git commit -a -m "messaggio di commit"`
 
 ####    b. Aggiornare il proprio repository su Github con il lavoro fatto in locale
-eseguire il comando `git push origin/master`. In questo modo il repository remoto sarà sincronizzato con quello locale (saranno richiesti user name e password del vostro account github per l'operazione di **push**)
+eseguire il comando `git push origin/master`. In questo modo il repository remoto sarà sincronizzato con quello locale (saranno richiesti user name e password del vostro account github per l'operazione di **push**).
 
 
 ### :white_small_square: 5. Sincronizare il proprio repository remoto con il repository principlae di progetto entrambi su Github
