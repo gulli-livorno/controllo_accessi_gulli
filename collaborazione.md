@@ -1,12 +1,14 @@
 # Guida per collaborare al progetto Controllo Accessi Gulli
 
 ### :white_small_square: 1. Creare un account su  Github ( https://github.com/join )
-
+___
 ### :white_small_square: 2. SW da scaricare sul proprio PC
 
 - [Arduino IDE SW ] (https://www.arduino.cc/en/Main/Software) (:raised_hand: chi ha già scritto e compilato almeno uno sketch su Arduino ce lo dovrebbe già avere )
 - [Git - distributed version control system ] (https://git-scm.com/)
 - [Una semplice guida a Git ] (http://rogerdudler.github.io/git-guide/index.it.html) (Opzionale)
+
+___
 
 ### :white_small_square: 3.  Clonare un progetto Github su Github
 Dopo aver eseguito l'accesso con il proprio account Github cercare il repository principale di progetto *controllo_accessi_gulli* ed eseguire un **Fork** del repository.
@@ -17,7 +19,7 @@ Questo creerà una copia del repository sul proprio account Github. E' già poss
 ####  a. Fare il **commit** di un file modificato
 Quando un file è stato modificato è possibile registrare le modifiche per creare una storia del progetto. Per farlo esiste il tasto **[ Commit Changes ]** in fondo all'editor. E' buona norma inserire un messaggio di commit per ricordarsi quali modifiche sono state fatte sul file. Su Github per salvare le modifiche ad un file è comunque necessario fare un commit.
 
-
+___
 
 ### :white_small_square: 4. Clonare un progetto Github sul proprio PC
 Dopo aver installato Git sul proprio PC posizionarsi nel file system dove si vuole che venga creata la directory di progetto.
@@ -34,6 +36,7 @@ Quando un file è stato modificato ed un piccolo progresso od obiettivo sono sta
 ####    b. Aggiornare il proprio repository su Github con il lavoro fatto in locale
 eseguire il comando `git push origin/master`. In questo modo il repository remoto sarà sincronizzato con quello locale (saranno richiesti user name e password del vostro account github per l'operazione di **push**).
 
+___
 
 ### :white_small_square: 5. Sincronizare il proprio repository remoto con il repository principlae di progetto entrambi su Github
 Non è possibile farlo direttamente da Github ma bisogna passare attraverso il proprio repository locale sul PC
@@ -50,6 +53,8 @@ in questo modo abbiamo aggiunto un repository remoto con il nome *upstream*. Qua
 adesso è necessario aggiornare il proprio repository su Github  con il comando:
 
 `git push origin/master`
+
+___
 
 ### :white_small_square: 6. Effettuare una pull request
 Quando è stato fatto del lavoro di sviluppo su una parte del codice e si desidera che questa venga  incorporata nel progetto principale e necessario eseguire l'operazione di **pull request** dal proprio account Github verso il repository di cui abbiamo fatto il Fork all'inizio (il repository principale di progetto). La pull request sarà fatta dopo che tutti i file modificati sono stati sottoposti a commit locale ed il proprio repository remoto è stato aggiornato con un comando di *push* (vedi 4.b). Dopo una pull request questa deve essere approvata dal proprietario del repository di progetto. Attraverso l'ambiente di Github è possibile scambiare  commenti e chiarimenti tra gli sviluppatori prima che il proprietario del repository approvi o rifiuti la pull request.
