@@ -33,6 +33,9 @@ se una barriera è bloccata in modo da generare un allarme audio/video
 4) altre cose che ci vengono in mente . . . . .
 */
 
+
+//************************************Implementazione Funzioni Globali ****************************************//
+
 /* funzione int TxCounters():
 Trasmette  il valore dei contatori di ingresso di uscita
 */
