@@ -28,36 +28,49 @@ aggiornare un display.
 2) comunicare al PC connesso
 se una barriera è bloccata in modo da generare un allarme audio/video
 
-3) altre cose che ci vengono in mente . . . . .
+3) rispondere a comandi dal PC connesso
+
+4) altre cose che ci vengono in mente . . . . .
 */
 
-
+/* funzione int TxCounters():
+Trasmette  il valore dei contatori di ingresso di uscita
+*/
 int TxCounters(){
 
 return 0;
 }
 
+/* funzione int TxIngresso():
+Trasmette  un evento di avvenuto ingresso
+*/
 int TxIngresso(){
 
 return 0;
 }
 
+/* funzione int TxUscita():
+Trasmette  un evento di avvenuta uscita
+*/
 int TxUscita(){
 
 return 0;
 }
 
-int TxBLocked(){
+/* funzione int TxBlocked():
+Trasmette  un evento di barriera bloccata
+*/
+int TxBlocked(){
 
 return 0;
 }
 
+
+/* funzione int ProcessSerialInput():
+Elabora eventuali comandi ricevuti da PC esterno
+*/
 int ProcessSerialInput(){
 
 return 0;
 }
 
-int GetCount(){
-
-return 0;
-}
