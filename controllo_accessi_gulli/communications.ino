@@ -17,7 +17,7 @@ __History__: (repeat the following line as many times as applicable)
 
 //TODO
 /* implementare un modulo per la comunicazione con un PC connesso via seriale
-o via Ethernet.
+
 
 Il SW controllo accessi che gira su Arduino dovrebbe:
 
@@ -37,7 +37,8 @@ se una barriera è bloccata in modo da generare un allarme audio/video
 //************************************Implementazione Funzioni Globali ****************************************//
 
 /* funzione int TxCounters():
-Trasmette  il valore dei contatori di ingresso di uscita
+Trasmette sulla porta seriale il valore dei contatori di ingresso di uscita
+Ritorna un eventuale codice di errore/conferma
 */
 int TxCounters(){
 
@@ -45,7 +46,8 @@ return 0;
 }
 
 /* funzione int TxIngresso():
-Trasmette  un evento di avvenuto ingresso
+Trasmette sulla porta seriale un evento di avvenuto ingresso
+Ritorna un eventuale codice di errore/conferma
 */
 int TxIngresso(){
 
@@ -53,7 +55,8 @@ return 0;
 }
 
 /* funzione int TxUscita():
-Trasmette  un evento di avvenuta uscita
+Trasmette sulla porta seriale un evento di avvenuta uscita
+Ritorna un eventuale codice di errore/conferma
 */
 int TxUscita(){
 
@@ -61,7 +64,8 @@ return 0;
 }
 
 /* funzione int TxBlocked():
-Trasmette  un evento di barriera bloccata
+Trasmettesulla porta seriale  un evento di barriera bloccata
+Ritorna un eventuale codice di errore/conferma
 */
 int TxBlocked(){
 
@@ -70,7 +74,8 @@ return 0;
 
 
 /* funzione int ProcessSerialInput():
-Elabora eventuali comandi ricevuti da PC esterno
+Elabora eventuali comandi ricevuti da PC esterno sulla porta seriale
+Ritorna un eventuale codice di errore/conferma
 */
 int ProcessSerialInput(){
 

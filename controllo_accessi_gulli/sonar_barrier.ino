@@ -29,7 +29,7 @@ return false;
 /* funzione  byte ReadSonars():
 Restituisce la codifica dello stato delle due barriere sonar:
 */
-  byte ReadSonars(){
+ byte ReadSonars(){
 
 //TODO: vedi specifiche in .docs/ReadSonar.pdf
 
