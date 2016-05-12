@@ -48,7 +48,7 @@ in questo modo abbiamo aggiunto un repository remoto con il nome *upstream*. Qua
 
 `git fetch upstream ( recupera una copia del repository remoto )`
 
-`git rebase origin/master ( applica le variazioni al repository locale )`
+`git rebase upstream/master ( applica le variazioni al repository locale )`
 
 adesso è necessario aggiornare il proprio repository su Github  con il comando:
 
