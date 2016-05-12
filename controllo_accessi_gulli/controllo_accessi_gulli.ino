@@ -46,7 +46,8 @@ NewPing int_Sonar(INT_SONAR_TRIG_PIN,INT_SONAR_ECHO_PIN,MAX_SONAR_DISTANCE);
 
 void setup()
 {
-
+bool flag=false;
+flag=IsBarrierCrossed(ext_Sonar);
 // TODO
 
 // creazione oggetti sonar
