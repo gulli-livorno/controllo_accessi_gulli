@@ -34,7 +34,7 @@ Quando un file è stato modificato ed un piccolo progresso od obiettivo sono sta
 `git commit -a -m "messaggio di commit"`
 
 ####    4b. Aggiornare il proprio repository su Github con il lavoro fatto in locale
-eseguire il comando `git push origin/master`. In questo modo il repository remoto sarà sincronizzato con quello locale (saranno richiesti user name e password del vostro account github per l'operazione di **push**).
+eseguire il comando `git push origin master`. In questo modo il repository remoto sarà sincronizzato con quello locale (saranno richiesti user name e password del vostro account github per l'operazione di **push**).
 
 ___
 
@@ -52,7 +52,7 @@ in questo modo abbiamo aggiunto un repository remoto con il nome *upstream*. Qua
 
 adesso è necessario aggiornare il proprio repository su Github  con il comando:
 
-`git push origin/master`
+`git push origin master`
 
 ___
 
