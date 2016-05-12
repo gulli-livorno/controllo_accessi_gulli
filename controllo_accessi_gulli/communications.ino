@@ -31,6 +31,12 @@ se una barriera è bloccata in modo da generare un allarme audio/video
 3) rispondere a comandi dal PC connesso
 
 4) altre cose che ci vengono in mente . . . . .
+
+5) arduino spedisce "i"/"o" seguito da un numero incrementale fino  a che il PC non ha ricevuto e manda conferma con un messaggio
+ACK e quindi il contatore di arduino si resetta
+
+6) Meccanismo heartbeat: PC manda periodicamente un richiesta ad ARD. che risponde se è OK. Altrimenti PC manda allarme ARD. is dead !
+
 */
 
 
