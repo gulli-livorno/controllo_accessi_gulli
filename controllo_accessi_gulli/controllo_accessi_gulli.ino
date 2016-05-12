@@ -21,8 +21,8 @@ __History__: (repeat the following line as many times as applicable)
 #include <NewPing.h> // librearia per gestione moduli Sonar HC-SR04
 
 //****************** global variables definition ******************
-// Collegamenti moduli Sonar
-#define EXT_SONAR_TRIG_PIN 99
+// Collegamenti moduli Sonar 
+#define EXT_SONAR_TRIG_PIN 3
 #define EXT_SONAR_ECHO_PIN  99
 #define INT_SONAR_TRIG_PIN 99
 #define INT_SONAR_ECHO_PIN 99
