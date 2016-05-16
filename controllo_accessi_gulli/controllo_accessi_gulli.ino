@@ -25,6 +25,7 @@ __History__: (repeat the following line as many times as applicable)
 #define INT_SONAR_TRIG_PIN 99
 #define INT_SONAR_ECHO_PIN 99
 #define MAX_SONAR_DISTANCE 100
+
 // codifica stati della State Machine
 #define SM_STATUS_Start 0 // in pratica non è usato
 #define SM_STATUS_L 1
@@ -32,18 +33,19 @@ __History__: (repeat the following line as many times as applicable)
 #define SM_Status_PU 3
 #define SM_Status_I 4
 #define SM_Status_U 5
+
 #define RITARDO 5 // tempo per attraversare la barriera
 
-#define SB_EXT_X 2
-#define SB_INT_X 1
-#define SB_NONE 0
+//codifica dello stato delle barriere
+#define SB_EXT_X 2 //barriera esterna attraversata
+#define SB_INT_X 1 //barriera interna attraversata
+#define SB_NONE 0 // barriere libere
 
-
+//****************** global variables definition ******************
 byte sonarBarries=B00000000; // così composta -> [0 0 0 0 0 0 extSonar intSonar ]
 bool barrierCrossed=false;
 byte SM_Status = SM_STATUS_L;  //stato corrente della SM
 unsigned long TTV_timer=0;
-//****************** global variables definition ******************
 NewPing ext_Sonar(EXT_SONAR_TRIG_PIN,EXT_SONAR_ECHO_PIN,MAX_SONAR_DISTANCE);
 NewPing int_Sonar(INT_SONAR_TRIG_PIN,INT_SONAR_ECHO_PIN,MAX_SONAR_DISTANCE);
 
