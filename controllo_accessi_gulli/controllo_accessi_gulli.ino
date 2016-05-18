@@ -9,6 +9,7 @@ __copyright__ = "Informazioni di Copyright"
 __license__ = "GPL"
 __email__ = "stefano.baldacci@gmail.com"
 __STATUS__ = "Development[X]";"Test[]";"Production[]";
+__branch__= test_SM (SHA1)
 __History__: (repeat the following line as many times as applicable)
     __version__ = "0.1 original"
 ***************************************************************************
@@ -40,6 +41,10 @@ __History__: (repeat the following line as many times as applicable)
 #define SB_INT_X 1 //barriera interna attraversata
 #define SB_NONE 0 // barriere libere
 
+// LED per eventi Ingresso e uscita
+#define LED_IN 
+#define LED_OUT
+
 //****************** global variables definition ******************
 int contaIngressi=0; // contatore degli avventuti ingressi
 int contaUscite=0;  // contatore delle avvenute uscite
@@ -55,6 +60,8 @@ void setup()
 // TODO
 // creazione oggetti sonar
 // inizializzazione time-out
+Serial.begin(57600);
+
 //
 
 }
