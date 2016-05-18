@@ -1,8 +1,3 @@
-#include <Arduino.h>
-#include "sonar_barrier.h"
-#include "communications.h"
-
-
 /*
  *********************Arduino Source File Header**************************
 __file_name__ = controllo_accessi_gulli.ino
