@@ -42,7 +42,7 @@ __History__: (repeat the following line as many times as applicable)
 #define SB_NONE 0 // barriere libere
 
 // LED per eventi Ingresso e uscita
-#define LED_IN 
+#define LED_IN
 #define LED_OUT
 
 //****************** global variables definition ******************
