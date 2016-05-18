@@ -1,3 +1,7 @@
+#include <Arduino.h>
+#include "sonar_barrier.h"
+#include "communications.h"
+
 
 /*
  *********************Arduino Source File Header**************************
@@ -9,7 +13,7 @@ __author__ = "Stefano Baldacci"
 __copyright__ = "Informazioni di Copyright"
 __license__ = "GPL"
 __email__ = "stefano.baldacci@gmail.com"
-__status__ = "Development[X]";"Test[]";"Production[]";
+__STATUS__ = "Development[X]";"Test[]";"Production[]";
 __History__: (repeat the following line as many times as applicable)
     __version__ = "0.1 original"
 ***************************************************************************
@@ -29,12 +33,12 @@ __History__: (repeat the following line as many times as applicable)
 // codifica stati della State Machine
 #define SM_STATUS_Start 0 // in pratica non è usato
 #define SM_STATUS_L 1
-#define SM_Status_PI 2
-#define SM_Status_PU 3
-#define SM_Status_I 4
-#define SM_Status_U 5
+#define SM_STATUS_PI 2
+#define SM_STATUS_PU 3
+#define SM_STATUS_I 4
+#define SM_STATUS_U 5
 
-#define RITARDO 5 // tempo per attraversare la barriera
+#define RITARDO 5 // tempo in [sec] per attraversare la barriera
 
 //codifica dello stato delle barriere
 #define SB_EXT_X 2 //barriera esterna attraversata
@@ -42,9 +46,10 @@ __History__: (repeat the following line as many times as applicable)
 #define SB_NONE 0 // barriere libere
 
 //****************** global variables definition ******************
+int contaIngressi=0; // contatore degli avventuti ingressi
+int contaUscite=0;  // contatore delle avvenute uscite
 byte sonarBarries=B00000000; // così composta -> [0 0 0 0 0 0 extSonar intSonar ]
-bool barrierCrossed=false;
-byte SM_Status = SM_STATUS_L;  //stato corrente della SM
+byte SM_STATUS = SM_STATUS_L;  //stato iniziale  della SM
 unsigned long TTV_timer=0;
 NewPing ext_Sonar(EXT_SONAR_TRIG_PIN,EXT_SONAR_ECHO_PIN,MAX_SONAR_DISTANCE);
 NewPing int_Sonar(INT_SONAR_TRIG_PIN,INT_SONAR_ECHO_PIN,MAX_SONAR_DISTANCE);
@@ -52,10 +57,7 @@ NewPing int_Sonar(INT_SONAR_TRIG_PIN,INT_SONAR_ECHO_PIN,MAX_SONAR_DISTANCE);
 
 void setup()
 {
-bool flag=false;
-flag=IsBarrierCrossed(ext_Sonar);
 // TODO
-
 // creazione oggetti sonar
 // inizializzazione time-out
 //
@@ -70,30 +72,74 @@ void loop()
 sonarBarries=ReadSonars();
 TTV_timer=millis()+RITARDO;
 
-switch (SM_Status) {
+switch (SM_STATUS) { // stato libero
   case SM_STATUS_L:
     switch (sonarBarries) {
       case SB_EXT_X:
-        SM_Status=SM_Status_PI;
+        SM_STATUS=SM_STATUS_PI;
       break;
-      case: SB_INT_X:
-        SM_Status=SM_Status_PU
+      case SB_INT_X:
+        SM_STATUS=SM_STATUS_PU;
+      break;
+      case SB_NONE:
+        SM_STATUS=SM_STATUS_L;
       break;
 
-      case:SB_NONE:
-
-      break;
       default:
+        SM_STATUS=SM_STATUS_L;
       break;
     }
   break;
 
-  case SM_Status_PI:
-
+  case SM_STATUS_PI: // stato di pre-ingresso
+    switch (sonarBarries) {
+      case SB_EXT_X: // nessun ingresso. Il soggetto è tornato indietro ....
+        SM_STATUS=SM_STATUS_L;
+      break;
+      case SB_INT_X:
+        //è avvenuto un ingresso
+        contaIngressi++;
+        SM_STATUS=SM_STATUS_L;
+      break;
+      case SB_NONE: // in attesa di un attraversamento . . .
+        if (TTV_timer-millis()<=0) {
+          //il timer attraversamento barriera è scaduto
+          //torno nello stato libero
+          SM_STATUS=SM_STATUS_L;
+        } else {
+          // aspetto che il timer scada o ci sia un attraversamento della barriera INTerna
+          SM_STATUS=SM_STATUS_PI;
+        }
+      break;
+      default:
+        SM_STATUS=SM_STATUS_L;
+      break;
+    }
   break;
 
-  case SM_Status_PU:
-
+  case SM_STATUS_PU: // stato di pre-uscita
+    switch (sonarBarries) {
+      case SB_EXT_X: // è avvenuta una uscita
+        contaUscite++;
+        SM_STATUS=SM_STATUS_L;
+      break;
+      case SB_INT_X: // nessun ingresso. Il soggetto è tornato indietro ...
+        SM_STATUS=SM_STATUS_L;
+      break;
+      case SB_NONE: // in attesa di un attraversamento . . .
+        if (TTV_timer-millis()<=0) {
+          //il timer attraversamento barriera è scaduto
+          //torno nello stato libero
+          SM_STATUS=SM_STATUS_L;
+        } else {
+          // aspetto che il timer scada o ci sia un attraversamento della barriera EXTerna
+          SM_STATUS=SM_STATUS_PU;
+        }
+      break;
+      default:
+        SM_STATUS=SM_STATUS_L;
+      break;
+    }
   break;
   //default:
   break;
