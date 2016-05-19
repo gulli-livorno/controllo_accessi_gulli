@@ -21,20 +21,19 @@ __History__: (repeat the following line as many times as applicable)
 //****************** global variables definition ******************
 // Collegamenti moduli Sonar
 #define EXT_SONAR_TRIG_PIN 3
-#define EXT_SONAR_ECHO_PIN  99
-#define INT_SONAR_TRIG_PIN 99
-#define INT_SONAR_ECHO_PIN 99
-#define MAX_SONAR_DISTANCE 100
+#define EXT_SONAR_ECHO_PIN  4
+#define INT_SONAR_TRIG_PIN 5
+#define INT_SONAR_ECHO_PIN 6
+#define MAX_SONAR_DISTANCE 100 //[cm]
 
 // codifica stati della State Machine
-#define SM_STATUS_Start 0 // in pratica non è usato
 #define SM_STATUS_L 1
 #define SM_STATUS_PI 2
 #define SM_STATUS_PU 3
 #define SM_STATUS_I 4
 #define SM_STATUS_U 5
 
-#define RITARDO 5 // tempo in [sec] per attraversare la barriera
+#define RITARDO 5000 // tempo in [msec] per attraversare la barriera
 
 //codifica dello stato delle barriere
 #define SB_EXT_X 2 //barriera esterna attraversata
@@ -42,8 +41,8 @@ __History__: (repeat the following line as many times as applicable)
 #define SB_NONE 0 // barriere libere
 
 // LED per eventi Ingresso e uscita
-#define LED_IN
-#define LED_OUT
+#define LED_IN 7
+#define LED_OUT 8
 
 //****************** global variables definition ******************
 int contaIngressi=0; // contatore degli avventuti ingressi
@@ -57,13 +56,7 @@ NewPing int_Sonar(INT_SONAR_TRIG_PIN,INT_SONAR_ECHO_PIN,MAX_SONAR_DISTANCE);
 
 void setup()
 {
-// TODO
-// creazione oggetti sonar
-// inizializzazione time-out
 Serial.begin(57600);
-
-//
-
 }
 
 
@@ -72,16 +65,21 @@ void loop()
 
 // TODO
 sonarBarries=ReadSonars();
-TTV_timer=millis()+RITARDO;
+Serial.print("Read Sonars ");
+Serial.println(sonarBarries, BIN);
 
-switch (SM_STATUS) { // stato libero
-  case SM_STATUS_L:
+switch (SM_STATUS) {
+  case SM_STATUS_L: // stato libero
+  Serial.print(F("\rSM_STATUS_L       "));
+    TTV_timer=millis()+RITARDO; //inizializzo Timer attraversamento barriere
     switch (sonarBarries) {
       case SB_EXT_X:
         SM_STATUS=SM_STATUS_PI;
+        Serial.println(F("\tSB_EXT_X"));
       break;
       case SB_INT_X:
         SM_STATUS=SM_STATUS_PU;
+          Serial.println(F("\tSB_INT_X"));
       break;
       case SB_NONE:
         SM_STATUS=SM_STATUS_L;
@@ -94,23 +92,29 @@ switch (SM_STATUS) { // stato libero
   break;
 
   case SM_STATUS_PI: // stato di pre-ingresso
+    Serial.print(F("\rSM_STATUS_PI       "));
     switch (sonarBarries) {
       case SB_EXT_X: // nessun ingresso. Il soggetto è tornato indietro ....
         SM_STATUS=SM_STATUS_L;
+        Serial.println(F("SB_EXT_X - Mancato ingresso !"));
       break;
       case SB_INT_X:
         //è avvenuto un ingresso
         contaIngressi++;
         SM_STATUS=SM_STATUS_L;
+        Serial.println(F("SB_INT_X - Ingresso-->[]"));
+        TxIngresso();
       break;
       case SB_NONE: // in attesa di un attraversamento . . .
         if (TTV_timer-millis()<=0) {
           //il timer attraversamento barriera è scaduto
           //torno nello stato libero
+          Serial.println(F("SB_NONE - Timeout scaduto - NO ingresso ! "));
           SM_STATUS=SM_STATUS_L;
         } else {
           // aspetto che il timer scada o ci sia un attraversamento della barriera INTerna
           SM_STATUS=SM_STATUS_PI;
+          Serial.println(F("SB_NONE - In attesa di ingresso "));
         }
       break;
       default:
@@ -120,22 +124,27 @@ switch (SM_STATUS) { // stato libero
   break;
 
   case SM_STATUS_PU: // stato di pre-uscita
+    Serial.print(F("\rSM_STATUS_PU       "));
     switch (sonarBarries) {
       case SB_EXT_X: // è avvenuta una uscita
         contaUscite++;
+        Serial.println(F("SB_EXT_X - Uscita[]-->"));
         SM_STATUS=SM_STATUS_L;
       break;
       case SB_INT_X: // nessun ingresso. Il soggetto è tornato indietro ...
         SM_STATUS=SM_STATUS_L;
+        Serial.println(F("SB_EXT_X - Mancata uscita !"));
       break;
       case SB_NONE: // in attesa di un attraversamento . . .
         if (TTV_timer-millis()<=0) {
           //il timer attraversamento barriera è scaduto
           //torno nello stato libero
+          Serial.println(F("SB_NONE - Timeout scaduto - NO uscita ! "));
           SM_STATUS=SM_STATUS_L;
         } else {
           // aspetto che il timer scada o ci sia un attraversamento della barriera EXTerna
           SM_STATUS=SM_STATUS_PU;
+          Serial.println(F("SB_NONE - In attesa di uscita "));
         }
       break;
       default:
