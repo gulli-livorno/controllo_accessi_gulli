@@ -25,7 +25,30 @@ return false;
 
   }
 
-  /* versione di test della IsBarrierCrossed(NewPing sonar):
+  /* funzione int IsEXTBarrierCrossed(NewPing sonar):
+  Controlla se la  barriera sonar Esterna è stata attraversata correttamente.
+  */
+  bool IsEXTBarrierCrossed() {
+
+  //TODO: vedi specifiche in .docs/IsBarrierCrossed.pdf
+  return false;
+    }
+
+
+    /* funzione int IsINTBarrierCrossed(NewPing sonar):
+    Controlla se la  barriera sonar Interna è stata attraversata correttamente.
+    */
+    bool IsINTBarrierCrossed() {
+
+    //TODO: vedi specifiche in .docs/IsBarrierCrossed.pdf
+    return false;
+      }
+
+
+
+  /* versione di test della IsEXTBarrierCrossed(NewPing sonar):
+  La barriera Sonar è simulata da un tasto collegato tra il pin
+  EXT_SONAR_ECHO_PIN e massa. Il pin deve essere in modo PULLUP
   */
   bool _t_IsEXTBarrierCrossed() {
 
@@ -34,7 +57,7 @@ return false;
   pinMode(EXT_SONAR_ECHO_PIN,INPUT_PULLUP );
   // controllo se il tast che simula la barriera è premuto
   if (digitalRead(EXT_SONAR_ECHO_PIN)==LOW) { // tasto premuto
-    
+
     //mi blocco fino a che il tasto è premuto ed accendo un LED
     while(digitalRead(EXT_SONAR_ECHO_PIN)==LOW) digitalWrite(LED_SB_EXT,HIGH);
 
@@ -50,6 +73,11 @@ return false;
     }
 
 
+
+    /* versione di test della IsINTBarrierCrossed(NewPing sonar):
+    La barriera Sonar è simulata da un tasto collegato tra il pin
+    INT_SONAR_ECHO_PIN e massa. Il pin deve essere in modo PULLUP
+    */
     bool _t_IsINTBarrierCrossed() {
 
     //TODO: vedi specifiche in .docs/IsBarrierCrossed.pdf
