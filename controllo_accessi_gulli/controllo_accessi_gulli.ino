@@ -45,6 +45,7 @@ __History__: (repeat the following line as many times as applicable)
 #define LED_SB_EXT 8
 
 //****************** global variables definition ******************
+long int aTime,bTime=0;
 int contaIngressi=0; // contatore degli avventuti ingressi
 int contaUscite=0;  // contatore delle avvenute uscite
 byte sonarBarries=B00000000; // così composta -> [0 0 0 0 0 0 extSonar intSonar ]
@@ -59,19 +60,29 @@ NewPing int_Sonar(INT_SONAR_TRIG_PIN,INT_SONAR_ECHO_PIN,MAX_SONAR_DISTANCE);
 
 void setup()
 {
-Serial.begin(57600);
+Serial.begin(115200);
+Serial.println(F("************************************"));
+Serial.println(F("GULLI: Controllo Accessi 1.0 Test SW"));
+Serial.println(F("************************************"));
+delay(5000);
+
 }
 
 void loop()
 {
 // TODO
 sonarBarries=ReadSonars();
-Serial.print("Read Sonars: ");
-Serial.println(sonarBarries, BIN);
+//Serial.print("Read Sonars: ");
+//Serial.println(sonarBarries, BIN);
+//Serial.print(" loop time[us]= ");
+bTime=aTime;
+aTime=micros();
+Serial.print("lt=");
+Serial.println(aTime-bTime);
 
 switch (SM_STATUS) {
   case SM_STATUS_L: // stato libero
-  Serial.print(F("\rSM_STATUS_L       "));
+  //Serial.print(F("\rSM_STATUS_L       "));
     TTV_timer=millis()+RITARDO; //inizializzo Timer attraversamento barriere
     switch (sonarBarries) {
       case SB_EXT_X:

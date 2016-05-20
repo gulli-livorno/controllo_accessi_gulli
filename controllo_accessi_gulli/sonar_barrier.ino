@@ -1,4 +1,3 @@
-#include "Arduino.h"
 /*
  *********************Arduino Source File Header**************************
 __file_name__ = "sonar_barrier.ino"
@@ -25,17 +24,16 @@ return false;
 
   }
 
-  /* funzione int IsEXTBarrierCrossed(NewPing sonar):
+  /* funzione bool IsEXTBarrierCrossed():
   Controlla se la  barriera sonar Esterna è stata attraversata correttamente.
   */
   bool IsEXTBarrierCrossed() {
-
   //TODO: vedi specifiche in .docs/IsBarrierCrossed.pdf
   return false;
     }
 
 
-    /* funzione int IsINTBarrierCrossed(NewPing sonar):
+    /* funzione bool IsINTBarrierCrossed():
     Controlla se la  barriera sonar Interna è stata attraversata correttamente.
     */
     bool IsINTBarrierCrossed() {
@@ -51,7 +49,6 @@ return false;
   EXT_SONAR_ECHO_PIN e massa. Il pin deve essere in modo PULLUP
   */
   bool _t_IsEXTBarrierCrossed() {
-
   //TODO: vedi specifiche in .docs/IsBarrierCrossed.pdf
   byte return_value=false;
   pinMode(EXT_SONAR_ECHO_PIN,INPUT_PULLUP );
@@ -79,8 +76,6 @@ return false;
     INT_SONAR_ECHO_PIN e massa. Il pin deve essere in modo PULLUP
     */
     bool _t_IsINTBarrierCrossed() {
-
-    //TODO: vedi specifiche in .docs/IsBarrierCrossed.pdf
     byte return_value=false;
     pinMode(INT_SONAR_ECHO_PIN,INPUT_PULLUP );
     // controllo se il tast che simula la barriera è premuto
@@ -105,9 +100,15 @@ Versione di test della ReadSonars()
 */
  byte _t_ReadSonars(){
 
-//TODO: vedi specifiche in .docs/ReadSonar.pdf
+   byte returnValue=B00000000;
+   bool INT_Sonar,EXTSonar=false;
 
-return 0;
+   INT_Sonar=IsINTBarrierCrossed();
+   EXTSonar=IsEXTBarrierCrossed();
+   bitWrite(returnValue,1,EXTSonar);
+   bitWrite(returnValue,0, INT_Sonar);
+
+   return returnValue;
 }
 
 
