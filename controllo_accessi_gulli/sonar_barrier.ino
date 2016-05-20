@@ -1,4 +1,4 @@
-
+#include "Arduino.h"
 /*
  *********************Arduino Source File Header**************************
 __file_name__ = "sonar_barrier.ino"
@@ -25,11 +25,65 @@ return false;
 
   }
 
+  /* versione di test della IsBarrierCrossed(NewPing sonar):
+  */
+  bool _t_IsEXTBarrierCrossed() {
 
-/* funzione  byte ReadSonars():
-Restituisce la codifica dello stato delle due barriere sonar:
+  //TODO: vedi specifiche in .docs/IsBarrierCrossed.pdf
+  byte return_value=false;
+  pinMode(EXT_SONAR_ECHO_PIN,INPUT_PULLUP );
+  // controllo se il tast che simula la barriera è premuto
+  if (digitalRead(EXT_SONAR_ECHO_PIN)==LOW) { // tasto premuto
+    
+    //mi blocco fino a che il tasto è premuto ed accendo un LED
+    while(digitalRead(EXT_SONAR_ECHO_PIN)==LOW) digitalWrite(LED_SB_EXT,HIGH);
+
+    //il tasto è rilasciato e mi sblocco. Questo simula barriera attraversata.
+    //Spengo il LED
+    digitalWrite(LED_SB_EXT,LOW);
+
+    return_value=true;
+    }
+
+  return return_value;
+
+    }
+
+
+    bool _t_IsINTBarrierCrossed() {
+
+    //TODO: vedi specifiche in .docs/IsBarrierCrossed.pdf
+    byte return_value=false;
+    pinMode(INT_SONAR_ECHO_PIN,INPUT_PULLUP );
+    // controllo se il tast che simula la barriera è premuto
+    if (digitalRead(INT_SONAR_ECHO_PIN)==LOW) { // tasto premuto
+
+      //mi blocco fino a che il tasto è premuto ed accendo un LED
+      while(digitalRead(INT_SONAR_ECHO_PIN)==LOW) digitalWrite(LED_SB_INT,HIGH);
+
+      //il tasto è rilasciato e mi sblocco. Questo simula barriera attraversata.
+      //Spengo il LED
+      digitalWrite(LED_SB_INT,LOW);
+
+      return_value=true;
+      }
+
+    return return_value;
+
+      }
+
+/* funzione  byte _t_ReadSonars():
+Versione di test della ReadSonars()
 */
- byte ReadSonars(){
+ byte _t_ReadSonars(){
+
+//TODO: vedi specifiche in .docs/ReadSonar.pdf
+
+return 0;
+}
+
+
+byte ReadSonars(){
 
 //TODO: vedi specifiche in .docs/ReadSonar.pdf
 

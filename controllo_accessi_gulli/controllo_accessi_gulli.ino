@@ -36,22 +36,25 @@ __History__: (repeat the following line as many times as applicable)
 #define RITARDO 5000 // tempo in [msec] per attraversare la barriera
 
 //codifica dello stato delle barriere
-#define SB_EXT_X 2 //barriera esterna attraversata
-#define SB_INT_X 1 //barriera interna attraversata
-#define SB_NONE 0 // barriere libere
+#define SB_EXT_X B00000010 //barriera esterna attraversata
+#define SB_INT_X B00000001 //barriera interna attraversata
+#define SB_NONE  B00000000 // barriere libere
 
 // LED per eventi Ingresso e uscita
-#define LED_IN 7
-#define LED_OUT 8
+#define LED_SB_INT 7
+#define LED_SB_EXT 8
 
 //****************** global variables definition ******************
 int contaIngressi=0; // contatore degli avventuti ingressi
 int contaUscite=0;  // contatore delle avvenute uscite
 byte sonarBarries=B00000000; // così composta -> [0 0 0 0 0 0 extSonar intSonar ]
 byte SM_STATUS = SM_STATUS_L;  //stato iniziale  della SM
-unsigned long TTV_timer=0;
+unsigned long TTV_timer=0; // timer per attraversamento barriera
+
+// oggetti NewPing per la gestione dei moduli sonar
 NewPing ext_Sonar(EXT_SONAR_TRIG_PIN,EXT_SONAR_ECHO_PIN,MAX_SONAR_DISTANCE);
 NewPing int_Sonar(INT_SONAR_TRIG_PIN,INT_SONAR_ECHO_PIN,MAX_SONAR_DISTANCE);
+
 
 
 void setup()
@@ -59,13 +62,11 @@ void setup()
 Serial.begin(57600);
 }
 
-
 void loop()
 {
-
 // TODO
 sonarBarries=ReadSonars();
-Serial.print("Read Sonars ");
+Serial.print("Read Sonars: ");
 Serial.println(sonarBarries, BIN);
 
 switch (SM_STATUS) {
