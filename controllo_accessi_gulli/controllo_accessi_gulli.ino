@@ -30,8 +30,6 @@ __History__: (repeat the following line as many times as applicable)
 #define SM_STATUS_L 1
 #define SM_STATUS_PI 2
 #define SM_STATUS_PU 3
-#define SM_STATUS_I 4
-#define SM_STATUS_U 5
 
 #define RITARDO 5000 // tempo in [msec] per attraversare la barriera
 
@@ -50,7 +48,7 @@ int contaIngressi=0; // contatore degli avventuti ingressi
 int contaUscite=0;  // contatore delle avvenute uscite
 byte sonarBarries=B00000000; // così composta -> [0 0 0 0 0 0 extSonar intSonar ]
 byte SM_STATUS = SM_STATUS_L;  //stato iniziale  della SM
-unsigned long TTV_timer=0; // timer per attraversamento barriera
+unsigned long TTV_timer=5000; // timer per attraversamento barriera in [ms]
 
 // oggetti NewPing per la gestione dei moduli sonar
 NewPing ext_Sonar(EXT_SONAR_TRIG_PIN,EXT_SONAR_ECHO_PIN,MAX_SONAR_DISTANCE);
@@ -72,17 +70,17 @@ void loop()
 {
 // TODO
 sonarBarries=ReadSonars();
-//Serial.print("Read Sonars: ");
-//Serial.println(sonarBarries, BIN);
+Serial.print("\rRead Sonars: ");
+Serial.print(sonarBarries, BIN);
 //Serial.print(" loop time[us]= ");
-bTime=aTime;
+/*bTime=aTime;
 aTime=micros();
 Serial.print("lt=");
 Serial.println(aTime-bTime);
-
+*/
 switch (SM_STATUS) {
   case SM_STATUS_L: // stato libero
-  //Serial.print(F("\rSM_STATUS_L       "));
+  Serial.print(F(" ->SM_STATUS_L       "));
     TTV_timer=millis()+RITARDO; //inizializzo Timer attraversamento barriere
     switch (sonarBarries) {
       case SB_EXT_X:
@@ -104,7 +102,7 @@ switch (SM_STATUS) {
   break;
 
   case SM_STATUS_PI: // stato di pre-ingresso
-    Serial.print(F("\rSM_STATUS_PI       "));
+    Serial.print(F(" ->SM_STATUS_PI       "));
     switch (sonarBarries) {
       case SB_EXT_X: // nessun ingresso. Il soggetto è tornato indietro ....
         SM_STATUS=SM_STATUS_L;
@@ -134,9 +132,8 @@ switch (SM_STATUS) {
       break;
     }
   break;
-
   case SM_STATUS_PU: // stato di pre-uscita
-    Serial.print(F("\rSM_STATUS_PU       "));
+    Serial.print(F(" ->SM_STATUS_PU       "));
     switch (sonarBarries) {
       case SB_EXT_X: // è avvenuta una uscita
         contaUscite++;

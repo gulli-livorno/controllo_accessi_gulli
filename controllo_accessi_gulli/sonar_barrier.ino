@@ -21,7 +21,6 @@ bool IsBarrierCrossed(NewPing sonar) {
 
 //TODO: vedi specifiche in .docs/IsBarrierCrossed.pdf
 return false;
-
   }
 
   /* funzione bool IsEXTBarrierCrossed():
