@@ -48,7 +48,7 @@ int contaIngressi=0; // contatore degli avventuti ingressi
 int contaUscite=0;  // contatore delle avvenute uscite
 byte sonarBarries=B00000000; // così composta -> [0 0 0 0 0 0 extSonar intSonar ]
 byte SM_STATUS = SM_STATUS_L;  //stato iniziale  della SM
-unsigned long TTV_timer=5000; // timer per attraversamento barriera in [ms]
+long int TTV_timer=5000; // timer per attraversamento barriera in [ms]
 
 // oggetti NewPing per la gestione dei moduli sonar
 NewPing ext_Sonar(EXT_SONAR_TRIG_PIN,EXT_SONAR_ECHO_PIN,MAX_SONAR_DISTANCE);
@@ -115,8 +115,10 @@ switch (SM_STATUS) {
         Serial.println(F("SB_INT_X - Ingresso-->[]"));
         TxIngresso();
       break;
-      case SB_NONE: // in attesa di un attraversamento . . .
-        if (TTV_timer-millis()<=0) {
+      case SB_NONE: // in attesa di un attraversamento . . 
+      //Serial.println(TTV_timer-millis());
+      //delay(1000);
+        if (long(TTV_timer-millis())<=0) { //  necessario cast ad long int
           //il timer attraversamento barriera è scaduto
           //torno nello stato libero
           Serial.println(F("SB_NONE - Timeout scaduto - NO ingresso ! "));
@@ -145,7 +147,7 @@ switch (SM_STATUS) {
         Serial.println(F("SB_EXT_X - Mancata uscita !"));
       break;
       case SB_NONE: // in attesa di un attraversamento . . .
-        if (TTV_timer-millis()<=0) {
+        if (long(TTV_timer-millis())<=0) {
           //il timer attraversamento barriera è scaduto
           //torno nello stato libero
           Serial.println(F("SB_NONE - Timeout scaduto - NO uscita ! "));
