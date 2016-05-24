@@ -33,7 +33,7 @@ __History__: (repeat the following line as many times as applicable)
 #define SM_STATUS_I 4
 #define SM_STATUS_U 5
 
-#define RITARDO 5 // tempo in [sec] per attraversare la barriera
+#define RITARDO 5000 // tempo in [sec] per attraversare la barriera
 
 //codifica dello stato delle barriere
 #define SB_EXT_X 2 //barriera esterna attraversata
