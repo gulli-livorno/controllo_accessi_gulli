@@ -102,8 +102,8 @@ Versione di test della ReadSonars()
    byte returnValue=B00000000;
    bool INT_Sonar,EXTSonar=false;
 
-   INT_Sonar=IsINTBarrierCrossed();
-   EXTSonar=IsEXTBarrierCrossed();
+   INT_Sonar=_t_IsINTBarrierCrossed();
+   EXTSonar=_t_IsEXTBarrierCrossed();
    bitWrite(returnValue,1,EXTSonar);
    bitWrite(returnValue,0, INT_Sonar);
 

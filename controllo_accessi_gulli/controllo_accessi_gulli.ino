@@ -69,7 +69,7 @@ delay(5000);
 void loop()
 {
 // TODO
-sonarBarries=ReadSonars();
+sonarBarries=_t_ReadSonars();
 Serial.print("\rRead Sonars: ");
 Serial.print(sonarBarries, BIN);
 //Serial.print(" loop time[us]= ");
