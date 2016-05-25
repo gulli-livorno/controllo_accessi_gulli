@@ -37,14 +37,26 @@ Prima di consegnare le nostre modifiche è necessario confiurare git con le nost
 `git config --global user.name "Your Name"`
 
 Quando un file è stato modificato ed un piccolo progresso od obiettivo sono stati raggiunti si possono registrare le modifiche per creare una storia del progetto nel repository locale. Eseguire il comando:
+
 `git commit -a -m "messaggio di commit"`
 
 ####    4b. Aggiornare il proprio repository su Github con il lavoro fatto in locale
-eseguire il comando `git push origin master`. In questo modo il repository remoto sarà sincronizzato con quello locale (saranno richiesti user name e password del vostro account github per l'operazione di **push**).
+eseguire il comando 
+
+`git push origin master`
+
+In questo modo il repository remoto sarà sincronizzato con quello locale (saranno richiesti user name e password del vostro account github per l'operazione di **push**).
+
+####    4c. Conflitto con un file sul repository su GitHub
+Se un file è stato modificato e caricato su GitHub mentre noi modificavamo i files sul nostro PC, al momento del del **push** il sistema si accorgerà del conflitto ed impedirà il caricamento. Anche il messaggio di errore suggerirà di effettuare un
+
+`git pull`
+
+per integrare le modifiche già caricate sul server con la nostra copia locale.
 
 ___
 
-### :white_small_square: 5. Sincronizare il proprio repository remoto con il repository principlae di progetto entrambi su Github
+### :white_small_square: 5. Sincronizare il proprio repository remoto con il repository principale di progetto entrambi su Github
 Non è possibile farlo direttamente da Github ma bisogna passare attraverso il proprio repository locale sul PC
 Per prima cosa aggiungere il repository principale di progetto come un altro repository remoto collegato al repository locale:
 
