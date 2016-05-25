@@ -30,6 +30,12 @@ Eseguire il comando:
  dove *git_hub_user_name* è lo user name dell'account Github creato in precedenza.
 Sarà creata una directory con il contenuto del progetto come esiste su Github nell'account personale creato all'inizio. Adesso è possibile lavorare in locale usando gli strumenti di sviluppo preferiti.
 ####    4a. Fare il commit di un file modificato
+Prima di consegnare le nostre modifiche è necessario confiurare git con le nostre credenziali:
+
+`git config --global user.email "you@example.com"`
+
+`git config --global user.name "Your Name"`
+
 Quando un file è stato modificato ed un piccolo progresso od obiettivo sono stati raggiunti si possono registrare le modifiche per creare una storia del progetto nel repository locale. Eseguire il comando:
 `git commit -a -m "messaggio di commit"`
 
