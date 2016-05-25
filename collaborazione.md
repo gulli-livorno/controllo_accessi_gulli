@@ -60,7 +60,7 @@ ___
 Non è possibile farlo direttamente da Github ma bisogna passare attraverso il proprio repository locale sul PC
 Per prima cosa aggiungere il repository principale di progetto come un altro repository remoto collegato al repository locale:
 
-`git remote add upstream https://github.com/subakun/controllo_accessi_gulli` 
+`git remote add upstream https://github.com/gulli-livorno/controllo_accessi_gulli` 
 
 in questo modo abbiamo aggiunto un repository remoto con il nome *upstream*. Quando vogliamo sincronizzarci con il repository upstream (è meglio farlo spesso per non rimanere troppo indietro con gli aggiornamenti ) bisogna eseguire i seguenti comandi:
 
