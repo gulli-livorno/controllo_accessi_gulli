@@ -43,7 +43,7 @@ return false;
 
 
 
-  /* versione di test della IsEXTBarrierCrossed(NewPing sonar):
+  /* versione di test della{} IsEXTBarrierCrossed(NewPing sonar):
   La barriera Sonar è simulata da un tasto collegato tra il pin
   EXT_SONAR_ECHO_PIN e massa. Il pin deve essere in modo PULLUP
   */
@@ -67,8 +67,6 @@ return false;
   return return_value;
 
     }
-
-
 
     /* versione di test della IsINTBarrierCrossed(NewPing sonar):
     La barriera Sonar è simulata da un tasto collegato tra il pin
@@ -117,4 +115,4 @@ byte ReadSonars(){
 
 return 0;
 
-  }
+}

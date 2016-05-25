@@ -8,7 +8,7 @@ __author__ = "Stefano Baldacci"
 __copyright__ = "Informazioni di Copyright"
 __license__ = "GPL"
 __email__ = "stefano.baldacci@gmail.com"
-__STATUS__ = "Development[X]";"Test[]";"Production[]";
+__STATUS__ = "Development[]";"Test[X]";"Production[]";
 __branch__= test_SM (SHA1)
 __History__: (repeat the following line as many times as applicable)
     __version__ = "0.1 original"
@@ -48,7 +48,7 @@ int contaIngressi=0; // contatore degli avventuti ingressi
 int contaUscite=0;  // contatore delle avvenute uscite
 byte sonarBarries=B00000000; // così composta -> [0 0 0 0 0 0 extSonar intSonar ]
 byte SM_STATUS = SM_STATUS_L;  //stato iniziale  della SM
-long int TTV_timer=5000; // timer per attraversamento barriera in [ms]
+unsigned long TTV_timer=0; // timer per attraversamento barriera
 
 // oggetti NewPing per la gestione dei moduli sonar
 NewPing ext_Sonar(EXT_SONAR_TRIG_PIN,EXT_SONAR_ECHO_PIN,MAX_SONAR_DISTANCE);
@@ -81,7 +81,7 @@ Serial.println(aTime-bTime);
 switch (SM_STATUS) {
   case SM_STATUS_L: // stato libero
   Serial.print(F(" ->SM_STATUS_L       "));
-    TTV_timer=millis()+RITARDO; //inizializzo Timer attraversamento barriere
+    TTV_timer=millis(); //inizializzo Timer attraversamento barriere
     switch (sonarBarries) {
       case SB_EXT_X:
         SM_STATUS=SM_STATUS_PI;
@@ -115,10 +115,10 @@ switch (SM_STATUS) {
         Serial.println(F("SB_INT_X - Ingresso-->[]"));
         TxIngresso();
       break;
-      case SB_NONE: // in attesa di un attraversamento . . 
+      case SB_NONE: // in attesa di un attraversamento . .
       //Serial.println(TTV_timer-millis());
       //delay(1000);
-        if (long(TTV_timer-millis())<=0) { //  necessario cast ad long int
+        if ((millis()-TTV_timer)>=RITARDO) { //  necessario cast ad long int
           //il timer attraversamento barriera è scaduto
           //torno nello stato libero
           Serial.println(F("SB_NONE - Timeout scaduto - NO ingresso ! "));
@@ -147,7 +147,7 @@ switch (SM_STATUS) {
         Serial.println(F("SB_EXT_X - Mancata uscita !"));
       break;
       case SB_NONE: // in attesa di un attraversamento . . .
-        if (long(TTV_timer-millis())<=0) {
+          if ((millis()-TTV_timer)>=RITARDO) {
           //il timer attraversamento barriera è scaduto
           //torno nello stato libero
           Serial.println(F("SB_NONE - Timeout scaduto - NO uscita ! "));
