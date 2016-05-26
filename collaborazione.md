@@ -25,9 +25,9 @@ ___
 Dopo aver installato Git sul proprio PC posizionarsi nel file system dove si vuole che venga creata la directory di progetto.
 Eseguire il comando: 
 
- `git clone https://git_hub_user_name@github.com/git_hub_user_name/controllo_accessi_gulli`
+ `git clone https://github.com/git_hub_user_name/controllo_accessi_gulli`
  
- dove *git_hub_user_name* è lo user name dell'account Github creato in precedenza.
+ dove *git_hub_user_name* è lo user name del proprio account Github creato in precedenza.
 Sarà creata una directory con il contenuto del progetto come esiste su Github nell'account personale creato all'inizio. Adesso è possibile lavorare in locale usando gli strumenti di sviluppo preferiti.
 ####    4a. Fare il commit di un file modificato
 Prima di consegnare le nostre modifiche è necessario confiurare git con le nostre credenziali:
