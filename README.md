@@ -1,4 +1,4 @@
-#Gulli controllo accessi
+# Gulli controllo accessi
 
 SW basato su Arduino e su due moduli sonar tipo HC-SR04 per il controllo degli accessi
 di persone attraverso un varco. Il sistema permette di contare gli ingressi e le uscite
