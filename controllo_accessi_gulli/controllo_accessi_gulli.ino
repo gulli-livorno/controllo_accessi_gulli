@@ -118,7 +118,7 @@ switch (SM_STATUS) {
       case SB_NONE: // in attesa di un attraversamento . .
       //Serial.println(TTV_timer-millis());
       //delay(1000);
-        if ((millis()-TTV_timer)>=RITARDO) { //  necessario cast ad long int
+        if ((millis()-TTV_timer)>=RITARDO) { 
           //il timer attraversamento barriera è scaduto
           //torno nello stato libero
           Serial.println(F("SB_NONE - Timeout scaduto - NO ingresso ! "));
