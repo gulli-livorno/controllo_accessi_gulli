@@ -47,7 +47,6 @@ Trasmette sulla porta seriale il valore dei contatori di ingresso di uscita
 Ritorna un eventuale codice di errore/conferma
 */
 int TxCounters(){
-
 return 0;
 }
 
@@ -87,4 +86,3 @@ int ProcessSerialInput(){
 
 return 0;
 }
-
