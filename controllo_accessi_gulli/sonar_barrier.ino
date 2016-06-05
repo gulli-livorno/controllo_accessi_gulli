@@ -13,97 +13,112 @@ __History__: (repeat the following line as many times as applicable)
 */
 
 //************************************Implementazione Funzioni Globali ****************************************//
+#include <NewPing.h>
+
+
+float NormalizedSonarReading(NewPing sonar, byte num_samples,int ref_distance ) {
+
+  float acc_dist=0.0f;
+  for (byte i=0; i < num_samples;i++) {
+    acc_dist+=sonar.ping_cm();
+    delay(int(MAX_SONAR_DISTANCE/SPEED_OF_SOUND + 0.5));
+  }
+  acc_dist=acc_dist/num_samples;
+  return acc_dist/ref_distance;
+}
+
+
+bool IsBarrierCrossed(NewPing sonar){
+
+  int distance,ref_distance=0;
+  #define TTB_DELAY 100 //ms
+  bool barrier_crossed=false;
+
+  distance=ext_Sonar.ping_cm(); //lettura istantanea barriera
+
+  if (distance > 0) { //catturo la prima lettura diversa da 0
+    if (NormalizedSonarReading(sonar, 10, ref_distance)>0.8) { // stimo validità interruzione
+      //interruzione valida
+      delay(TTB_DELAY);
+
+      while (! barrier_crossed) { // attendo riapertura barriera
+        if (NormalizedSonarReading(sonar, 10, ref_distance)<0.2) { // stimo validità barriera aperta
+          //barriera aperta
+          barrier_crossed=true;
+        } else {
+          //barriera bloccata
+          Serial.println("Barriera bloccata >||<");
+          }
+      }
+    }
+  }
+  return barrier_crossed;
+}
 
   /* funzione bool IsEXTBarrierCrossed():
   Controlla se la  barriera sonar Esterna è stata attraversata correttamente.
   */
   bool IsEXTBarrierCrossed() {
-  //TODO: vedi specifiche in .docs/IsBarrierCrossed.pdf
-  return false;
+  //vedi specifiche in .docs/IsBarrierCrossed.pdf
+  byte zeroCount=0;
+  int distance=0;
+  unsigned long TTB_Timer=0;
+  #define TTB_DELAY 100 //ms
+  bool barrier_crossed=false;
+  distance=ext_Sonar.ping_cm();
+
+
+  int distance_ref=distance;
+
+if (distance > 0) {
+  distance=0;
+  Serial.println("prima interruzione");
+  Serial.print("distanceref = ");
+  Serial.print(distance_ref);
+  for(int j=0;j<10;j++) {
+    distance+=ext_Sonar.ping_cm();
+    delay(2);
     }
 
-
-    /* funzione bool IsINTBarrierCrossed():
-    Controlla se la  barriera sonar Interna è stata attraversata correttamente.
-    */
-    bool IsINTBarrierCrossed() {
-
-    //TODO: vedi specifiche in .docs/IsBarrierCrossed.pdf
+    if(distance<5*distance_ref) {
+    // disurbo
     return false;
-      }
+  }
+  Serial.println(" interruzione valida");
+  delay(TTB_DELAY); // si può eliminare ?
+  while (! barrier_crossed) {
+  distance=0;
+  for(int j=0;j<10;j++) {
+    distance+=ext_Sonar.ping_cm();
+    delay(2);
+  }
+  Serial.print("distance in while loop = ");
+  Serial.print(distance);
+  if(distance < 2*distance_ref){
+    barrier_crossed=true; // barriera attraversata
+    Serial.println(" barriera attraversata");
+  } else {
+  Serial.println("Barriera Bloccata");
+  }
+}
+
+ }
+ return barrier_crossed;
+}
 
 
 
-  /* versione di test della{} IsEXTBarrierCrossed(NewPing sonar):
-  La barriera Sonar è simulata da un tasto collegato tra il pin
-  EXT_SONAR_ECHO_PIN e massa. Il pin deve essere in modo PULLUP
-  */
-  bool _t_IsEXTBarrierCrossed() {
-  //TODO: vedi specifiche in .docs/IsBarrierCrossed.pdf
-  byte return_value=false;
-  pinMode(EXT_SONAR_ECHO_PIN,INPUT_PULLUP );
-  // controllo se il tast che simula la barriera è premuto
-  if (digitalRead(EXT_SONAR_ECHO_PIN)==LOW) { // tasto premuto
-
-    //mi blocco fino a che il tasto è premuto ed accendo un LED
-    while(digitalRead(EXT_SONAR_ECHO_PIN)==LOW) digitalWrite(LED_SB_EXT,HIGH);
-
-    //il tasto è rilasciato e mi sblocco. Questo simula barriera attraversata.
-    //Spengo il LED
-    digitalWrite(LED_SB_EXT,LOW);
-
-    return_value=true;
-    }
-
-  return return_value;
-
-    }
-
-    /* versione di test della IsINTBarrierCrossed(NewPing sonar):
-    La barriera Sonar è simulata da un tasto collegato tra il pin
-    INT_SONAR_ECHO_PIN e massa. Il pin deve essere in modo PULLUP
-    */
-    bool _t_IsINTBarrierCrossed() {
-    byte return_value=false;
-    pinMode(INT_SONAR_ECHO_PIN,INPUT_PULLUP );
-    // controllo se il tast che simula la barriera è premuto
-    if (digitalRead(INT_SONAR_ECHO_PIN)==LOW) { // tasto premuto
-
-      //mi blocco fino a che il tasto è premuto ed accendo un LED
-      while(digitalRead(INT_SONAR_ECHO_PIN)==LOW) digitalWrite(LED_SB_INT,HIGH);
-
-      //il tasto è rilasciato e mi sblocco. Questo simula barriera attraversata.
-      //Spengo il LED
-      digitalWrite(LED_SB_INT,LOW);
-
-      return_value=true;
-      }
-
-    return return_value;
-
-      }
-
-/* funzione  byte _t_ReadSonars():
-Versione di test della ReadSonars()
+/* funzione ReadSonars()
 */
- byte _t_ReadSonars(){
+ byte ReadSonars(){
 
    byte returnValue=B00000000;
    bool INT_Sonar,EXTSonar=false;
 
-   INT_Sonar=_t_IsINTBarrierCrossed();
-   EXTSonar=_t_IsEXTBarrierCrossed();
+   INT_Sonar=IsBarrierCrossed(int_Sonar);
+   EXTSonar=IsBarrierCrossed(ext_Sonar);
    bitWrite(returnValue,1,EXTSonar);
    bitWrite(returnValue,0, INT_Sonar);
 
    return returnValue;
-}
-
-
-byte ReadSonars(){
-
-//TODO: vedi specifiche in .docs/ReadSonar.pdf
-
-return 0;
-
 }

@@ -23,7 +23,8 @@ __History__: (repeat the following line as many times as applicable)
 #define EXT_SONAR_ECHO_PIN  4
 #define INT_SONAR_TRIG_PIN 5
 #define INT_SONAR_ECHO_PIN 6
-#define MAX_SONAR_DISTANCE 100 //[cm]
+#define MAX_SONAR_DISTANCE 50.0f  //[cm]
+#define SPEED_OF_SOUND 33.0f    //[cm/ms]
 
 
 //codifica dello stato delle barriere sonar
@@ -49,21 +50,23 @@ NewPing int_Sonar(INT_SONAR_TRIG_PIN,INT_SONAR_ECHO_PIN,MAX_SONAR_DISTANCE);
 void setup()
 {
 Serial.begin(115200);
-Serial.println(F("************************************"));
-Serial.println(F("GULLI: Controllo Accessi 1.0 Test SW"));
-Serial.println(F("************************************"));
-delay(1000);
+
 }
-
-
 
 void loop()
 {
-sonarBarries=_t_ReadSonars();
-Serial.print("\rRead Sonars: ");
-Serial.print(sonarBarries, BIN);
+  bool BX=false;
+//sonarBarries=_t_ReadSonars();
+delay(10);                     // Wait 50ms between pings (about 20 pings/sec). 29ms should be the shortest delay between pings.
+Serial.print("Ping: ");
+Serial.println(ext_Sonar.ping_cm()); // Send ping, get distance in cm and print result (0 = outside set distance range)
+BX=IsEXTBarrierCrossed();
 
-// TODO
+if (BX) {
+ Serial.println("!!! BARRIERA ATTRAVERSATA !!!");
+ delay(1000);
+}
+
 // Funzioni di prova moduli sonar e chiamata funzioni del m modulo sonar_barrier.ino
 
 }
