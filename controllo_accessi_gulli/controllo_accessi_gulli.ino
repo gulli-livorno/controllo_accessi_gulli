@@ -57,11 +57,13 @@ void loop()
 {
   bool BX=false;
 //sonarBarries=_t_ReadSonars();
-delay(10);                     // Wait 50ms between pings (about 20 pings/sec). 29ms should be the shortest delay between pings.
+//delay(2);                     // Wait 50ms between pings (about 20 pings/sec). 29ms should be the shortest delay between pings.
 Serial.print("Ping: ");
 Serial.println(ext_Sonar.ping_cm()); // Send ping, get distance in cm and print result (0 = outside set distance range)
-BX=IsEXTBarrierCrossed();
+//BX=IsEXTBarrierCrossed();
 
+
+BX=IsBarrierCrossed(ext_Sonar);
 if (BX) {
  Serial.println("!!! BARRIERA ATTRAVERSATA !!!");
  delay(1000);
