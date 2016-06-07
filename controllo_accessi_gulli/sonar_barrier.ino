@@ -60,12 +60,12 @@ bool IsBarrierCrossed(NewPing sonar){
   #define TTB_DELAY 100 //ms
   bool barrier_crossed=false;
 
-  distance=ext_Sonar.ping_cm(); //lettura istantanea barriera
+  distance=sonar.ping_cm(); //lettura istantanea barriera
   ref_distance=distance; // lettura di riferimento
   if (distance > 0) { //catturo la prima lettura diversa da 0
     if (NormalizedSonarReading(sonar, 10, ref_distance)>0.8) { // stimo validità interruzione
       //interruzione valida
-      delay(TTB_DELAY);
+    //  delay(20);
 
       while (! barrier_crossed) { // attendo riapertura barriera
         if (NormalizedSonarReading(sonar, 10, ref_distance)<0.2) { // stimo validità barriera aperta

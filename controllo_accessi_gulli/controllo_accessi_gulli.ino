@@ -40,35 +40,70 @@ __History__: (repeat the following line as many times as applicable)
 byte sonarBarries=B00000000; // così composta -> [0 0 0 0 0 0 extSonar intSonar ]
 
 unsigned long TTV_timer=0; // timer per attraversamento barriera
+#define TTV_DELAY 500 //tempo attraversamento barriera [ms]
+bool timeout=false;
+
+int contaIngressi=0;
+int contaUscite=0;
 
 // oggetti NewPing per la gestione dei moduli sonar
 NewPing ext_Sonar(EXT_SONAR_TRIG_PIN,EXT_SONAR_ECHO_PIN,MAX_SONAR_DISTANCE);
 NewPing int_Sonar(INT_SONAR_TRIG_PIN,INT_SONAR_ECHO_PIN,MAX_SONAR_DISTANCE);
 
 
-
 void setup()
 {
 Serial.begin(115200);
-
 }
 
 void loop()
 {
   bool BX=false;
-//sonarBarries=_t_ReadSonars();
-//delay(2);                     // Wait 50ms between pings (about 20 pings/sec). 29ms should be the shortest delay between pings.
-Serial.print("Ping: ");
-Serial.println(ext_Sonar.ping_cm()); // Send ping, get distance in cm and print result (0 = outside set distance range)
-//BX=IsEXTBarrierCrossed();
+  Serial.print(F("Ping Ext Sonar:"));
+  Serial.print(ext_Sonar.ping_cm());
+  Serial.print(F("  Ping Int Sonar:"));
+  Serial.print(int_Sonar.ping_cm());
+  Serial.print(F("    Ingressi="));
+  Serial.print(contaIngressi);
+  Serial.print(F("  Uscite="));
+  Serial.print(contaUscite);
+  Serial.print("\r");
 
+  // Controllo INGRESSO
+  BX=IsBarrierCrossed(ext_Sonar);
+  if (BX) {
+    TTV_timer=millis(); //inizializzo timer
+    while (! (IsBarrierCrossed(int_Sonar)||timeout)) { // attendo attraversamento barriera interna o timeout
+      if (millis()-TTV_timer>TTV_DELAY) {
+        timeout=true;
+      }
+    }
+      if (! timeout) { // se sono uscito dal loop NON per timeout allora è un ingresso
+        contaIngressi++;
+        Serial.print(F("INGRESSO ->[]                                             "));
+      }
 
-BX=IsBarrierCrossed(ext_Sonar);
-if (BX) {
- Serial.println("!!! BARRIERA ATTRAVERSATA !!!");
- delay(1000);
-}
+  }
 
-// Funzioni di prova moduli sonar e chiamata funzioni del m modulo sonar_barrier.ino
+ // delay per esaurire echo sonar
+ delay(10);
+  // Controllo USCITA
+  BX=IsBarrierCrossed(int_Sonar);
+  if (BX) {
+    TTV_timer=millis(); //inizializzo timer
+    while (! (IsBarrierCrossed(ext_Sonar)||timeout)) { // attendo attraversamento barriera interna o timeout
+      if (millis()-TTV_timer>TTV_DELAY) {
+        timeout=true;
+      }
+    }
+      if (! timeout) { // se sono uscito dal loop NON per timeout allora è un'uscita
+        contaUscite++;
+        Serial.print(F("USCITA []->                                             "));
+      }
+  }
+  // delay per esaurire echo sonar
+delay(10);
+  timeout=false;
+  Serial.print("\r");
 
 }
