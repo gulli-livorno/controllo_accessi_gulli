@@ -159,3 +159,16 @@ byte
 
    return returnValue;
 }
+
+String TestSonarModule(NewPing sonar,unsigned long start_time) {
+
+String msg=String("TSM: d[cm] t[ms]");
+String distance=String("");
+distance+=sonar.ping_cm();
+String atime=String("");
+atime+=(millis()-start_time);
+msg.replace("d",distance);
+msg.replace("t",atime);
+return msg;
+
+}
