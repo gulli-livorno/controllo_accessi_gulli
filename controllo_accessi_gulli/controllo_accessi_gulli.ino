@@ -23,7 +23,7 @@ __History__: (repeat the following line as many times as applicable)
 #define EXT_SONAR_ECHO_PIN  4
 #define INT_SONAR_TRIG_PIN 5
 #define INT_SONAR_ECHO_PIN 6
-#define MAX_SONAR_DISTANCE 50.0f  //[cm]
+#define MAX_SONAR_DISTANCE 80.0f  //[cm]
 #define SPEED_OF_SOUND 33.0f    //[cm/ms]
 
 
@@ -40,7 +40,7 @@ __History__: (repeat the following line as many times as applicable)
 byte sonarBarries=B00000000; // così composta -> [0 0 0 0 0 0 extSonar intSonar ]
 
 unsigned long TTV_timer=0; // timer per attraversamento barriera
-#define TTV_DELAY 500 //tempo attraversamento barriera [ms]
+#define TTV_DELAY 2500 //tempo attraversamento barriera [ms]
 bool timeout=false;
 
 int contaIngressi=0;
