@@ -23,7 +23,7 @@ __History__: (repeat the following line as many times as applicable)
 #define EXT_SONAR_ECHO_PIN  4
 #define INT_SONAR_TRIG_PIN 5
 #define INT_SONAR_ECHO_PIN 6
-#define MAX_SONAR_DISTANCE 80.0f  //[cm]
+#define LARGHEZZA_VARCO 120.0f  //[cm]
 #define SPEED_OF_SOUND 33.0f    //[cm/ms]
 
 
@@ -46,19 +46,28 @@ bool timeout=false;
 int contaIngressi=0;
 int contaUscite=0;
 
-// oggetti NewPing per la gestione dei moduli sonar
-NewPing ext_Sonar(EXT_SONAR_TRIG_PIN,EXT_SONAR_ECHO_PIN,MAX_SONAR_DISTANCE);
-NewPing int_Sonar(INT_SONAR_TRIG_PIN,INT_SONAR_ECHO_PIN,MAX_SONAR_DISTANCE);
 
+int i=0;
+float dist=0.0;
+
+// oggetti NewPing per la gestione dei moduli sonar
+NewPing ext_Sonar(EXT_SONAR_TRIG_PIN,EXT_SONAR_ECHO_PIN,LARGHEZZA_VARCO);
+NewPing int_Sonar(INT_SONAR_TRIG_PIN,INT_SONAR_ECHO_PIN,LARGHEZZA_VARCO);
+
+String msg="";
 
 void setup()
 {
 Serial.begin(115200);
+pinMode(7, OUTPUT);
+pinMode(8, OUTPUT);
 }
 
 void loop()
 {
   bool BX=false;
+  digitalWrite(7,LOW);
+  digitalWrite(8,LOW);
   Serial.print(F("Ping Ext Sonar:"));
   Serial.print(ext_Sonar.ping_cm());
   Serial.print(F("  Ping Int Sonar:"));
@@ -69,41 +78,67 @@ void loop()
   Serial.print(contaUscite);
   Serial.print("\r");
 
-  // Controllo INGRESSO
-  BX=IsBarrierCrossed(ext_Sonar);
-  if (BX) {
+  //Controllo INGRESSO
+  if (IsBarrierCrossed(ext_Sonar,8,LARGHEZZA_VARCO*0.9,0.6)) {
     TTV_timer=millis(); //inizializzo timer
-    while (! (IsBarrierCrossed(int_Sonar)||timeout)) { // attendo attraversamento barriera interna o timeout
+
+    while (! (IsBarrierCrossed(int_Sonar,8,LARGHEZZA_VARCO*0.9,0.6)||timeout)) { // attendo attraversamento barriera interna o timeout
       if (millis()-TTV_timer>TTV_DELAY) {
         timeout=true;
       }
     }
       if (! timeout) { // se sono uscito dal loop NON per timeout allora è un ingresso
         contaIngressi++;
+        digitalWrite(8,HIGH);
+        tone(10, 500, 200);
         Serial.print(F("INGRESSO ->[]                                             "));
       }
-
   }
 
- // delay per esaurire echo sonar
- delay(10);
+
+
+
+
+
+ //delay per esaurire echo sonar
+ //delay(10);
   // Controllo USCITA
-  BX=IsBarrierCrossed(int_Sonar);
-  if (BX) {
+  //Controllo INGRESSO
+  if (IsBarrierCrossed(int_Sonar,8,LARGHEZZA_VARCO*0.9,0.6)) {
     TTV_timer=millis(); //inizializzo timer
-    while (! (IsBarrierCrossed(ext_Sonar)||timeout)) { // attendo attraversamento barriera interna o timeout
+
+    while (! (IsBarrierCrossed(ext_Sonar,8,LARGHEZZA_VARCO*0.9,0.6)||timeout)) { // attendo attraversamento barriera externa o timeout
       if (millis()-TTV_timer>TTV_DELAY) {
         timeout=true;
       }
     }
-      if (! timeout) { // se sono uscito dal loop NON per timeout allora è un'uscita
+      if (! timeout) { // se sono uscito dal loop NON per timeout allora è una uscita
         contaUscite++;
-        Serial.print(F("USCITA []->                                             "));
+          digitalWrite(7,HIGH);
+          tone(10, 200, 200);
+        Serial.print(F("USCITA ->[]                                             "));
       }
   }
-  // delay per esaurire echo sonar
-delay(10);
+
   timeout=false;
   Serial.print("\r");
+
+
+
+ /* ************************ TEST ***************************
+dist=NormalizedSonarReading(ext_Sonar, 8,MAX_SONAR_DISTANCE);
+
+//msg=TestSonarModule(ext_Sonar,millis());
+if (dist< 0.6) {
+  Serial.print(F("********************************* "));
+  Serial.print(dist);
+  Serial.println(F(" *********************************"));
+}
+else {
+Serial.println(dist);
+//delay(random(6));
+}
+  ************************ TEST ************************** */
+
 
 }
