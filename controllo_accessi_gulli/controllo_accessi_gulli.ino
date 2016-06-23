@@ -61,6 +61,7 @@ void setup()
 Serial.begin(115200);
 pinMode(7, OUTPUT);
 pinMode(8, OUTPUT);
+tone(10, 200, 500);
 }
 
 void loop()
@@ -90,8 +91,8 @@ void loop()
       if (! timeout) { // se sono uscito dal loop NON per timeout allora è un ingresso
         contaIngressi++;
         digitalWrite(8,HIGH);
-        delay(100);
-        //tone(10, 500, 200);
+        tone(11, 500, 500);
+
         Serial.print(F("INGRESSO ->[]                                             "));
       }
   }
@@ -119,14 +120,15 @@ void loop()
       if (! timeout) { // se sono uscito dal loop NON per timeout allora è una uscita
         contaUscite++;
           digitalWrite(7,HIGH);
-          //tone(10, 200, 200);
-          delay(100);
+          tone(11, 200, 500);
+
         Serial.print(F("USCITA ->[]                                             "));
       }
   }
 
   timeout=false;
   Serial.print("\r");
+    //tone(11, 200, 100);
 
 
 
