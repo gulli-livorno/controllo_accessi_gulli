@@ -23,7 +23,7 @@ __History__: (repeat the following line as many times as applicable)
 #define EXT_SONAR_ECHO_PIN  4
 #define INT_SONAR_TRIG_PIN 5
 #define INT_SONAR_ECHO_PIN 6
-#define LARGHEZZA_VARCO 120.0f  //[cm]
+#define LARGHEZZA_VARCO 100  //[cm]
 #define SPEED_OF_SOUND 33.0f    //[cm/ms]
 
 
@@ -40,7 +40,7 @@ __History__: (repeat the following line as many times as applicable)
 byte sonarBarries=B00000000; // così composta -> [0 0 0 0 0 0 extSonar intSonar ]
 
 unsigned long TTV_timer=0; // timer per attraversamento barriera
-#define TTV_DELAY 2500 //tempo attraversamento barriera [ms]
+#define TTV_DELAY 1500 //tempo attraversamento barriera [ms]
 bool timeout=false;
 
 int contaIngressi=0;
@@ -81,8 +81,8 @@ void loop()
   //Controllo INGRESSO
   if (IsBarrierCrossed(ext_Sonar,8,LARGHEZZA_VARCO*0.9,0.6)) {
     TTV_timer=millis(); //inizializzo timer
-
-    while (! (IsBarrierCrossed(int_Sonar,8,LARGHEZZA_VARCO*0.9,0.6)||timeout)) { // attendo attraversamento barriera interna o timeout
+    delay(6);
+    while (! (IsBarrierCrossed(int_Sonar,5,LARGHEZZA_VARCO*0.9,0.6)||timeout)) { // attendo attraversamento barriera interna o timeout
       if (millis()-TTV_timer>TTV_DELAY) {
         timeout=true;
       }
@@ -90,23 +90,27 @@ void loop()
       if (! timeout) { // se sono uscito dal loop NON per timeout allora è un ingresso
         contaIngressi++;
         digitalWrite(8,HIGH);
-        tone(10, 500, 200);
+        delay(100);
+        //tone(10, 500, 200);
         Serial.print(F("INGRESSO ->[]                                             "));
       }
   }
 
 
 
-
+// note di test
+//Distanza moduli sonar 30 cm.
+//Larghezza varco 85 cm
+// altezza sensori 75
 
 
  //delay per esaurire echo sonar
  //delay(10);
   // Controllo USCITA
   //Controllo INGRESSO
-  if (IsBarrierCrossed(int_Sonar,8,LARGHEZZA_VARCO*0.9,0.6)) {
+  if (IsBarrierCrossed(int_Sonar,5,LARGHEZZA_VARCO*0.9,0.6)) {
     TTV_timer=millis(); //inizializzo timer
-
+    delay(6);
     while (! (IsBarrierCrossed(ext_Sonar,8,LARGHEZZA_VARCO*0.9,0.6)||timeout)) { // attendo attraversamento barriera externa o timeout
       if (millis()-TTV_timer>TTV_DELAY) {
         timeout=true;
@@ -115,7 +119,8 @@ void loop()
       if (! timeout) { // se sono uscito dal loop NON per timeout allora è una uscita
         contaUscite++;
           digitalWrite(7,HIGH);
-          tone(10, 200, 200);
+          //tone(10, 200, 200);
+          delay(100);
         Serial.print(F("USCITA ->[]                                             "));
       }
   }
