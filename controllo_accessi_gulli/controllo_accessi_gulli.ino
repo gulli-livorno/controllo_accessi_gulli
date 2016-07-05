@@ -66,6 +66,8 @@ tone(10, 200, 500);
 
 void loop()
 {
+
+  /*
   bool BX=false;
   digitalWrite(7,LOW);
   digitalWrite(8,LOW);
@@ -109,6 +111,8 @@ void loop()
  //delay(10);
   // Controllo USCITA
   //Controllo INGRESSO
+
+
   if (IsBarrierCrossed(int_Sonar,5,LARGHEZZA_VARCO*0.9,0.6)) {
     TTV_timer=millis(); //inizializzo timer
     delay(6);
@@ -128,6 +132,13 @@ void loop()
 
   timeout=false;
   Serial.print("\r");
+*/
+
+  Serial.print(10);
+  Serial.print(" ");
+  Serial.print(20);
+  Serial.print("\n");
+  delay(10);
     //tone(11, 200, 100);
 
 
