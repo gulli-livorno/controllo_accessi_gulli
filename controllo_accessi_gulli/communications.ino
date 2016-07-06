@@ -51,29 +51,36 @@ return 0;
 }
 
 /* funzione int TxIngresso():
-Trasmette sulla porta seriale un evento di avvenuto ingresso
+Trasmette sulla porta seriale un evento di avvenuto ingresso ed attende un ACK
 Ritorna un eventuale codice di errore/conferma
 */
-int TxIngresso(){
+int TxCounters(char* msg, int* retryCounter){
+  //TX su serial
+  bool retval=false;
+  if (*retryCounter > 0) {
+    Serial.print(msg);
+    Serial.print(*retryCounter);
 
-return 0;
+    if (Serial.find(msg)) { // ACK ricevuto da HOST PC. resetto il contatore txRetryCounter
+      *retryCounter=0;
+      retval=true;
+    }
+    else {   // Il PC HOST non risponde. Incremento il contatore txRetryCounter
+      *retryCounter++;
+    }
+  }
+return retval;
 }
 
-/* funzione int TxUscita():
-Trasmette sulla porta seriale un evento di avvenuta uscita
-Ritorna un eventuale codice di errore/conferma
-*/
-int TxUscita(){
 
-return 0;
-}
 
 /* funzione int TxBlocked():
-Trasmettesulla porta seriale  un evento di barriera bloccata
+Trasmette sulla porta seriale  un evento di barriera bloccata
 Ritorna un eventuale codice di errore/conferma
 */
 int TxBlocked(){
 
+Serial.print("B");
 return 0;
 }
 
@@ -82,7 +89,21 @@ return 0;
 Elabora eventuali comandi ricevuti da PC esterno sulla porta seriale
 Ritorna un eventuale codice di errore/conferma
 */
-int ProcessSerialInput(){
+int ProcessSerialCommands(){
+char cmdBuffer[]="   ";
+if (Serial.available()) {
+  Serial.readBytes(cmdBuffer, 3); // comandi di tre caratteri
+  if (cmdBuffer=="RST") { // reset counters
+    /* code */
+  }
+  if (cmdBuffer=="HBT") { //Heart beat. Arduino è in funzione e gira tutto OK ?
+    /* code */
+  }
 
+  if (cmdBuffer=="XXX") { //
+    /* code */
+  }
+
+}
 return 0;
 }
