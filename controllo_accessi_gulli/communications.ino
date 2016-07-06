@@ -59,14 +59,14 @@ int TxCounters(char* msg, int* retryCounter){
   bool retval=false;
   if (*retryCounter > 0) {
     Serial.print(msg);
-    Serial.print(*retryCounter);
+    Serial.println(*retryCounter); //trasmetto "IN numero_passaggi_in_sospeso"
 
-    if (Serial.find(msg)) { // ACK ricevuto da HOST PC. resetto il contatore txRetryCounter
+    if (Serial.find("ACK")) { // ACK ricevuto da HOST PC. resetto il contatore txRetryCounter
       *retryCounter=0;
       retval=true;
     }
     else {   // Il PC HOST non risponde. Incremento il contatore txRetryCounter
-      *retryCounter++;
+    //  (*retryCounter)++;
     }
   }
 return retval;

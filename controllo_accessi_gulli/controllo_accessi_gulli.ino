@@ -28,8 +28,8 @@ __History__: (repeat the following line as many times as applicable)
 
 int contaIngressi=0;
 int contaUscite=0;
-int txRetryCounterIN=0;
-int txRetryCounterOUT=0;
+int txRetryIN=0;
+int txRetryOUT=0;
 String rxBuffer="   ";
 
 String msg="";
@@ -37,12 +37,13 @@ String msg="";
 void setup()
 {
 Serial.begin(115200);
+Serial.setTimeout(10);
 pinMode(7, OUTPUT);
 pinMode(8, OUTPUT);
 
 pinMode(SW_INGRESSO, INPUT_PULLUP);
 pinMode(SW_USCITA, INPUT_PULLUP);
-tone(10, 200, 500);
+//tone(10, 200, 500);
 }
 
 void loop()
@@ -53,22 +54,31 @@ void loop()
 
   // INGRESSO
 if (digitalRead(SW_INGRESSO)==LOW) {
+  while(digitalRead(SW_INGRESSO)==LOW);
   contaIngressi++;
-  txRetryCounterIN++;
+  txRetryIN++;
 }
 
 
 
 // USCITA
-// INGRESSO
+
 if (digitalRead(SW_USCITA)==LOW) {
-contaUscite++;
-txRetryCounterOUT++;
+    while(digitalRead(SW_USCITA)==LOW);
+  contaUscite++;
+  txRetryOUT++;
 }
 
 
-TxCounters("IN ", &(txRetryCounterIN));
+TxCounters("IN ", &(txRetryIN));
+TxCounters("OUT ", &(txRetryOUT));
     //tone(11, 200, 100);
 
+/*Serial.print("Ingressi: ");
+Serial.println(contaIngressi);
+Serial.print("Uscite: ");
+Serial.println(contaUscite);
+*/
+delay(100);
 
 }
