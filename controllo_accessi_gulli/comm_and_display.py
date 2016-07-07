@@ -13,6 +13,7 @@ ser.flushInput()
 ser.flushOutput()
 print(ser.name)
 #time.sleep(5)
+
 while 1:
     if(ser.inWaiting()):
         counter+=1

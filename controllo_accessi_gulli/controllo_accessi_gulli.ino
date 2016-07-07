@@ -62,7 +62,6 @@ if (digitalRead(SW_INGRESSO)==LOW) {
 
 
 // USCITA
-
 if (digitalRead(SW_USCITA)==LOW) {
     while(digitalRead(SW_USCITA)==LOW);
   contaUscite++;
