@@ -42,13 +42,7 @@ ACK e quindi il contatore di arduino si resetta
 
 //************************************Implementazione Funzioni Globali ****************************************//
 
-/* funzione int TxCounters():
-Trasmette sulla porta seriale il valore dei contatori di ingresso di uscita
-Ritorna un eventuale codice di errore/conferma
-*/
-int TxCounters(){
-return 0;
-}
+
 
 /* funzione int TxIngresso():
 Trasmette sulla porta seriale un evento di avvenuto ingresso ed attende un ACK
@@ -59,9 +53,9 @@ int TxCounters(char* msg, int* retryCounter){
   bool retval=false;
   if (*retryCounter > 0) {
     Serial.print(msg);
-    Serial.print(*retryCounter);
+    Serial.println(*retryCounter);
 
-    if (Serial.find(msg)) { // ACK ricevuto da HOST PC. resetto il contatore txRetryCounter
+    if (Serial.find("ACK")) { // ACK ricevuto da HOST PC. resetto il contatore txRetryCounter
       *retryCounter=0;
       retval=true;
     }
@@ -96,13 +90,27 @@ if (Serial.available()) {
   if (cmdBuffer=="RST") { // reset counters
     /* code */
   }
-  if (cmdBuffer=="HBT") { //Heart beat. Arduino è in funzione e gira tutto OK ?
+  if (cmdBuffer=="HBT") { //Heart beat. Arduino è in funzione e gira tutto OK
     /* code */
   }
 
   if (cmdBuffer=="XXX") { //
     /* code */
   }
+
+  if (cmdBuffer=="CNT") { // Trasmetto i valori dei counters ingressi e uscite
+
+    // dopo la trasmissione   e ricezione ACK azzero i contatori
+    Serial.print(contaIngressi);
+    Serial.print(" ");
+    Serial.print(contaUscite);
+    if (Serial.find("ACK")) { // ACK ricevuto da HOST PC. resetto il contatore txRetryCounter
+      contaIngressi=0;
+      contaUscite=0;
+    }
+    else {
+      //errore di comunicazione. Accendo LED ?
+    }
 
 }
 return 0;

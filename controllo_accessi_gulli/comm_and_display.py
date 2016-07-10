@@ -1,6 +1,7 @@
 #!/usr/bin/env  python
 
 import serial,time
+import make_html
 
 rx_buffer=" "
 rx_data=[0, 0]
@@ -22,10 +23,11 @@ while 1:
             ser.write('ACK')
 	    rx_data=rx_buffer.split()
             msg= str(rx_data[0]) + ":"+ str(rx_data[1])
-            print(str(counter ) + " " + msg)
+            //print(str(counter ) + " " + msg)
             if(rx_buffer.find("IN")):
                 ingressi+=int(rx_data[1])
             if(rx_buffer.find("OUT")):
                 uscite+=int(rx_data[1])
-    print("Ingressi= " + str(ingressi)+"\n")
-    print("Uscite= " + str(uscite) + "\n")
+    make_html.MakeHTML(ingressi,uscite,"OK")
+    #print("Ingressi= " + str(ingressi)+"\n")
+    #print("Uscite= " + str(uscite) + "\n")
