@@ -1,7 +1,5 @@
 #! python
-
 def MakeHTML(InCounter, OutCounter,Status):
-
 			VisCoutner =InCounter-OutCounter
 			html_page="""
 			<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">

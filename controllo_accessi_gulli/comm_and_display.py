@@ -12,7 +12,7 @@ counter=0
 ser = serial.Serial('/dev/ttyAMA0', 115200, timeout=1)
 ser.flushInput()
 ser.flushOutput()
-print(ser.name)
+#print(ser.name)
 #time.sleep(5)
 
 while 1:

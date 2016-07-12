@@ -84,6 +84,7 @@ Elabora eventuali comandi ricevuti da PC esterno sulla porta seriale
 Ritorna un eventuale codice di errore/conferma
 */
 int ProcessSerialCommands(){
+byte retval=0;
 char cmdBuffer[]="   ";
 if (Serial.available()) {
   Serial.readBytes(cmdBuffer, 3); // comandi di tre caratteri
@@ -91,7 +92,7 @@ if (Serial.available()) {
     /* code */
   }
   if (cmdBuffer=="HBT") { //Heart beat. Arduino è in funzione e gira tutto OK
-    /* code */
+    //
   }
 
   if (cmdBuffer=="XXX") { //
@@ -107,11 +108,14 @@ if (Serial.available()) {
     if (Serial.find("ACK")) { // ACK ricevuto da HOST PC. resetto il contatore txRetryCounter
       contaIngressi=0;
       contaUscite=0;
+      retval=1;
     }
     else {
-      //errore di comunicazione. Accendo LED ?
+      //errore di comunicazione.
+      retval=0;
     }
 
+  }
+return retval;
 }
-return 0;
 }

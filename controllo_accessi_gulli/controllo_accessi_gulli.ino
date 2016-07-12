@@ -18,20 +18,22 @@ __History__: (repeat the following line as many times as applicable)
 // libreria per gestione moduli Sonar HC-SR04
 
 //****************** global variables definition ******************
-// Collegamenti moduli Sonar
+// Collegamenti switch per simulazione Ingressi e Uscite
 #define SW_INGRESSO 3
 #define SW_USCITA 4
 
 // LED per eventi Ingresso e uscita
 #define LED_SB_INT 7
 #define LED_SB_EXT 8
+//LED per Errore Comunicazione
+#define LED_COMM_ERR 9
+
 
 int contaIngressi=0;
 int contaUscite=0;
 int txRetryIN=0;
 int txRetryOUT=0;
 String rxBuffer="   ";
-
 String msg="";
 
 void setup()
@@ -40,7 +42,6 @@ Serial.begin(115200);
 Serial.setTimeout(10);
 pinMode(7, OUTPUT);
 pinMode(8, OUTPUT);
-
 pinMode(SW_INGRESSO, INPUT_PULLUP);
 pinMode(SW_USCITA, INPUT_PULLUP);
 //tone(10, 200, 500);
@@ -49,8 +50,8 @@ pinMode(SW_USCITA, INPUT_PULLUP);
 void loop()
 {
 
-  digitalWrite(7,LOW);
-  digitalWrite(8,LOW);
+  digitalWrite(LED_SB_INT,LOW);
+  digitalWrite(LED_SB_EXT,LOW);
 
   // INGRESSO
 if (digitalRead(SW_INGRESSO)==LOW) {
@@ -58,7 +59,6 @@ if (digitalRead(SW_INGRESSO)==LOW) {
   contaIngressi++;
   txRetryIN++;
 }
-
 
 
 // USCITA
@@ -73,11 +73,6 @@ TxCounters("IN ", &(txRetryIN));
 TxCounters("OUT ", &(txRetryOUT));
     //tone(11, 200, 100);
 
-/*Serial.print("Ingressi: ");
-Serial.println(contaIngressi);
-Serial.print("Uscite: ");
-Serial.println(contaUscite);
-*/
 delay(100);
 
 }
