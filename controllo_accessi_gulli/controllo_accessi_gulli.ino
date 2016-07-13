@@ -23,8 +23,8 @@ __History__: (repeat the following line as many times as applicable)
 #define SW_USCITA 4
 
 // LED per eventi Ingresso e uscita
-#define LED_SB_INT 7
-#define LED_SB_EXT 8
+#define LED_SB_IN 7
+#define LED_SB_OUT 8
 //LED per Errore Comunicazione
 #define LED_COMM_ERR 9
 
@@ -39,9 +39,9 @@ String msg="";
 void setup()
 {
 Serial.begin(115200);
-Serial.setTimeout(10);
-pinMode(7, OUTPUT);
-pinMode(8, OUTPUT);
+Serial.setTimeout(10000);
+pinMode(LED_SB_IN, OUTPUT);
+pinMode(LED_SB_OUT, OUTPUT);
 pinMode(SW_INGRESSO, INPUT_PULLUP);
 pinMode(SW_USCITA, INPUT_PULLUP);
 //tone(10, 200, 500);
@@ -50,14 +50,15 @@ pinMode(SW_USCITA, INPUT_PULLUP);
 void loop()
 {
 
-  digitalWrite(LED_SB_INT,LOW);
-  digitalWrite(LED_SB_EXT,LOW);
+  digitalWrite(LED_SB_IN,LOW);
+  digitalWrite(LED_SB_OUT,LOW);
 
   // INGRESSO
 if (digitalRead(SW_INGRESSO)==LOW) {
   while(digitalRead(SW_INGRESSO)==LOW);
   contaIngressi++;
   txRetryIN++;
+  digitalWrite(LED_SB_IN,HIGH);
 }
 
 
@@ -66,13 +67,13 @@ if (digitalRead(SW_USCITA)==LOW) {
     while(digitalRead(SW_USCITA)==LOW);
   contaUscite++;
   txRetryOUT++;
+  digitalWrite(LED_SB_OUT,HIGH);
 }
 
 
-TxCounters("IN ", &(txRetryIN));
-TxCounters("OUT ", &(txRetryOUT));
+if(ProcessSerialCommands()) Serial.println("ACK received");
     //tone(11, 200, 100);
 
-delay(100);
+delay(200);
 
 }
