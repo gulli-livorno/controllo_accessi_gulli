@@ -1,6 +1,6 @@
 #! python
 def MakeHTML(InCounter, OutCounter,Status):
-			VisCoutner =InCounter-OutCounter
+			VisCounter =InCounter-OutCounter
 			html_page="""
 			<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
 			<html>
@@ -30,7 +30,7 @@ def MakeHTML(InCounter, OutCounter,Status):
 					</tr>
 					<tr>
 						<td ><span style="color: #0066ff"><span style="font-size: 48px"><span style="font-family: georgia,serif">VISITATORI PRESENTI</span></span></span></td>
-						<td width="150"><span style="font-size: 72px"><span style="font-family: georgia,serif">{VisCoutner}</span></span></td>
+						<td width="150"><span style="font-size: 72px"><span style="font-family: georgia,serif">{VisCounter}</span></span></td>
 					</tr>
 					<tr>
 						<td><span style="font-size: 36px"><span style="font-family: georgia,serif">Stato</span></span></td>
@@ -42,5 +42,5 @@ def MakeHTML(InCounter, OutCounter,Status):
 			</html>
 			"""
 
-			print("Content-Type: text/html\n\n")
-			print(html_page.format(**locals()))
+			print("Content-Type: text/html\n\n") #required HTTP header
+			print(html_page.format(**locals())) # sostituisce i valori delle variabili tra { } nella stringa html_page

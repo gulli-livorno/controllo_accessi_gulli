@@ -3,68 +3,63 @@
 import serial,time
 import make_html
 
+# file per ilsalvataggio degli accessi
+log_file_name='accessi.log'
+
+# apro porta seriale per comunicazione con Arduino
+ser = serial.Serial('/dev/ttyAMA0', 115200, timeout=1)
+
 rx_buffer=" "
 rx_data=[0, 0]
 status=" "
 ingressi=0
 uscite=0
 timestamp=""
-ser = serial.Serial('/dev/ttyAMA0', 115200, timeout=1)
 ser.flushInput()
 ser.flushOutput()
-#print(ser.name)
-#time.sleep(5)
 
-#load  counters from File
-with open('accessi.log') as logfile:
+
+#ricarico i valori dei contatori dal file di log. Il formato del file è: [timestamp] [Ingressi] [Uscite]
+with open(log_file_name) as logfile:
     for line in logfile:
         if(line.strip()):
                 try:
-                    logdata=line.split()
-                    ingressi=int(logdata[1])
-                    uscite=int(logdata[2])
+                    rx_data=line.split()
+                    ingressi=int(rx_data[1])
+                    uscite=int(rx_data[2])
                 except:
+                    status="log file error"
                     continue
 
 
-# send CNT command
+# trasmetto comando CNT su seriale
 ser.write('CNT')
-
-# receive and parse counters
+# ricevo da seriale
 rx_buffer=ser.readline()
-if(rx_buffer.find("\n")):
-    # do stuff
+if(rx_buffer.find("\n")): # se ho ricevuto senza timeout
+    try:
+    #estraggo i valori  dalla stringa ricevuta ed aggiorno i contatori Ingressi/Uscite
+    rx_data=rx_buffer.split()
+    ingressi+=int(rx_data[0])
+    uscite+=int(rx_data[1])
+    # trasmetto  ACK su seriale
+    ser.write('ACK')
+    except:
+        status="comm. error"
+
+
+    # aggiorno il file di log se necessario
+    if(rx_data[0]!=0 or rx_data[1]!=0):
+    # aggiungo timestamp al file
     timestamp=time.strftime("%H:%M:%S-%d/%m/%Y ",time.localtime())
-    rx_buffer=timestamp+rx_buffer
-    with open('accessi.log',a) as logfile:
-        logfile.write(timestamp + rx_buffer +"\n")
-        try:
-        logdata=line.split()
-        ingressi=int(logdata[1])
-        uscite=int(logdata[2])
-        except:
-             continue
+    rx_buffer=timestamp + rx_buffer
+    with open(log_file_name,a) as logfile:
+        logfile.write(rx_buffer +"\n")
+
 else:
     status="comm. error"
 
-
-# update File
-# generate html
-
-
-while 1:
-    if(ser.inWaiting()):
-        counter+=1
-        rx_buffer=ser.readline()
-        if(rx_buffer.find("IN")>-1 or rx_buffer.find("OUT")>-1):
-            ser.write('ACK')
-	    rx_data=rx_buffer.split()
-            msg= str(rx_data[0]) + ":"+ str(rx_data[1])
-            #print(str(counter ) + " " + msg)
-            if(rx_buffer.find("IN")):
-                ingressi+=int(rx_data[1])
-            if(rx_buffer.find("OUT")):
-                uscite+=int(rx_data[1])
-    make_html.MakeHTML(ingressi,uscite,"OK")
-    #print("Ingressi= " + str(ingressi)+"\n")
-    #print("Uscite= " + str(uscite) + "\n")
+# creo file html per Display Controllo Accessi
+make_html.MakeHTML(ingressi,uscite,status)
+#print("Ingressi= " + str(ingressi)+"\n")
+#print("Uscite= " + str(uscite) + "\n")
