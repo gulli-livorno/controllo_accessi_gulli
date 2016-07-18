@@ -1,23 +1,23 @@
 #!/usr/bin/env  python
 # coding=utf-8
 import serial,time
-import make_html
+#import make_html
 
-# file per il salvataggio degli accessi
+# file per ilsalvataggio degli accessi
 log_file_name='accessi.log'
 
 # apro porta seriale per comunicazione con Arduino
-ser = serial.Serial('/dev/ttyAMA0',57600 , timeout=1)
+ser = serial.Serial('/dev/pts/9', 115200, timeout=1)
 
 rx_buffer=" "
 rx_data=[0, 0]
-status=" "
+status="OK"
 ingressi=0
 uscite=0
 timestamp=""
 ser.flushInput()
 ser.flushOutput()
-print(ser.name)
+
 
 # ricarico i valori dei contatori dal file di log. Il formato del file è: [timestamp] [Ingressi] [Uscite]
 with open(log_file_name,"a+") as logfile:
@@ -25,19 +25,17 @@ with open(log_file_name,"a+") as logfile:
         if(line.strip()):
                 try:
                     rx_data=line.split()
-                    ingressi=int(rx_data[1])
-                    uscite=int(rx_data[2])
+                    ingressi+=int(rx_data[1])
+                    uscite+=int(rx_data[2])
                 except:
                     status="log file error"
 
 
 
 # trasmetto comando CNT su seriale
-ser.write("CNT")
+ser.write('CNT')
 # ricevo da seriale
 rx_buffer=ser.readline()
-#rx_buffer=ser.read(5)
-print(rx_buffer)
 if(rx_buffer.find("\n")>=0): # se ho ricevuto senza timeout
     try:
     #estraggo i valori  dalla stringa ricevuta ed aggiorno i contatori Ingressi/Uscite
@@ -46,10 +44,10 @@ if(rx_buffer.find("\n")>=0): # se ho ricevuto senza timeout
         ingressi+=int(rx_data[0])
         uscite+=int(rx_data[1])
         # trasmetto  ACK su seriale
-        ser.write("ACK")
+        ser.write('ACK')
     except:
         status="comm. error"
-
+        
 
     # aggiorno il file di log se necessario
     if(rx_data[0]!=0 or rx_data[1]!=0):
@@ -61,10 +59,10 @@ if(rx_buffer.find("\n")>=0): # se ho ricevuto senza timeout
 
 else:
     status="comm. error"
-ser.flushInput()
-ser.close()
+
 # creo file html per Display Controllo Accessi
 #make_html.MakeHTML(ingressi,uscite,status)
 print("Ingressi= " + str(ingressi)+"\n")
 print("Uscite= " + str(uscite) + "\n")
 print("Status= " +  str(status) + "\n")
+ser.close()
