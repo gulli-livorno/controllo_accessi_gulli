@@ -89,16 +89,16 @@ char cmdBuffer[]="   ";
 if (Serial.available()) {
 
   Serial.readBytes(cmdBuffer, 3); // comandi di tre caratteri
-  if (strcmp(cmdBuffer,"RST")) { // reset counters
+  if (strcmp(cmdBuffer,"RST")==0) { // reset counters
     contaIngressi=0;
     contaUscite=0;
     Serial.println("ACK");
   }
-  if (strcmp(cmdBuffer,"HBT")) { // Heart beat. Arduino è in funzione e gira tutto OK
+  if (strcmp(cmdBuffer,"HBT")==0) { // Heart beat. Arduino è in funzione e gira tutto OK
     Serial.println("ACK");
   }
 
-  if (strcmp(cmdBuffer,"XXX")) { //
+  if (strcmp(cmdBuffer,"XXX")==0) { //
     /* code */
   }
 
@@ -107,7 +107,7 @@ if (Serial.available()) {
     Serial.print(contaIngressi);
     Serial.print(" ");
     Serial.println(contaUscite);
-    if (Serial.find("ACK")) { // ACK ricevuto da HOST PC. resetto il contatore txRetryCounter
+    if (Serial.find("ACK")) { // ACK ricevuto da HOST PC.
       contaIngressi=0;
       contaUscite=0;
       retval=1;
