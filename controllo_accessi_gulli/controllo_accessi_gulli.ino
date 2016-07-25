@@ -23,8 +23,8 @@ __History__: (repeat the following line as many times as applicable)
 #define SW_USCITA 4
 
 // LED per eventi Ingresso e uscita
-#define LED_SB_IN 7
-#define LED_SB_OUT 8
+#define LED_SB_IN 12
+#define LED_SB_OUT 11
 //LED per Errore Comunicazione
 #define LED_COMM_ERR 9
 
