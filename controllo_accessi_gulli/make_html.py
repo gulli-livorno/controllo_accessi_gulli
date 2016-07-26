@@ -1,4 +1,20 @@
-#! python
+#!/usr/bin/env  python
+# coding=utf-8
+#*********************Python function  header******************************
+__doc__="""make_html.py: Questa funzione stampa  una pagina html per visualizzare
+i valori dei contatori di ingresso uscita ed un eventuale codice di errore in modo
+che possano essere visualizzati in un browser"""
+__author__ = "Stefano Baldacci"
+__copyright__ = """Copyright information The content of this file is property of
+Stefano Baldacci.It cannot be used, copied, modified, transferred or disclosed
+without prior written agreement"""
+__license__ = "GPL"
+__email__ = "stefano.baldacci@gmail.com"
+__status__ = "Production"
+#History: (repeat the following line as many times as applicable)
+__version__ = "0.1.1 original"
+#******************************************************************************
+
 def MakeHTML(InCounter, OutCounter,Status):
 			VisCounter =InCounter-OutCounter
 			html_page="""
