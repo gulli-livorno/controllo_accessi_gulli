@@ -7,7 +7,9 @@ import serial,time
 log_file_name='accessi.log'
 
 # apro porta seriale per comunicazione con Arduino
-ser = serial.Serial('/dev/pts/9', 115200, timeout=1)
+
+ser = serial.Serial('/dev/ttyUSB0',57600 , timeout=1)
+
 
 rx_buffer=" "
 rx_data=[0, 0]
@@ -36,10 +38,11 @@ with open(log_file_name,"a+") as logfile:
 ser.write('CNT')
 # ricevo da seriale
 rx_buffer=ser.readline()
+
 if(rx_buffer.find("\n")>=0): # se ho ricevuto senza timeout
     try:
     #estraggo i valori  dalla stringa ricevuta ed aggiorno i contatori Ingressi/Uscite
-        print("found !")
+        #print("found !")
         rx_data=rx_buffer.split()
         ingressi+=int(rx_data[0])
         uscite+=int(rx_data[1])
@@ -47,10 +50,11 @@ if(rx_buffer.find("\n")>=0): # se ho ricevuto senza timeout
         ser.write('ACK')
     except:
         status="comm. error"
-        
+
 
     # aggiorno il file di log se necessario
-    if(rx_data[0]!=0 or rx_data[1]!=0):
+   # print("ingressi:uscite " + str(rx_data[0]) +":" + str(rx_data[1]))
+    if(rx_data[0]!='0' or rx_data[1]!='0'):
     # aggiungo timestamp al file
         timestamp=time.strftime("%H:%M:%S-%d/%m/%Y ",time.localtime())
         rx_buffer=timestamp + rx_buffer
@@ -60,9 +64,10 @@ if(rx_buffer.find("\n")>=0): # se ho ricevuto senza timeout
 else:
     status="comm. error"
 
-# creo file html per Display Controllo Accessi
-#make_html.MakeHTML(ingressi,uscite,status)
-print("Ingressi= " + str(ingressi)+"\n")
-print("Uscite= " + str(uscite) + "\n")
-print("Status= " +  str(status) + "\n")
+ser.flushInput()
 ser.close()
+# creo file html per Display Controllo Accessi
+make_html.MakeHTML(ingressi,uscite,status)
+#print("Ingressi= " + str(ingressi)+"\n")
+#print("Uscite= " + str(uscite) + "\n")
+#print("Status= " +  str(status) + "\n")

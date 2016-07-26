@@ -82,9 +82,11 @@ if (Serial.available()) {
 
   if (strcmp(cmdBuffer,"CNT")==0) { // Trasmetto i valori dei counters ingressi e uscite
     // dopo la trasmissione   e ricezione ACK azzero i contatori
+    digitalWrite(LED_SB_OUT,HIGH);
     Serial.print(contaIngressi);
     Serial.print(" ");
-    Serial.println(contaUscite);
+    Serial.print(contaUscite);
+    Serial.print("\n");
     if (Serial.find("ACK")) { // ACK ricevuto da HOST PC.
       contaIngressi=0;
       contaUscite=0;
