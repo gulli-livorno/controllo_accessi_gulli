@@ -25,28 +25,6 @@ __History__: (repeat the following line as many times as applicable)
 
 
 
-/* funzione int TxIngresso():
-Trasmette sulla porta seriale un evento di avvenuto ingresso ed attende un ACK
-Ritorna un eventuale codice di errore/conferma
-*/
-int TxCounters(char* msg, int* retryCounter){
-  //TX su serial
-  bool retval=false;
-  if (*retryCounter > 0) {
-    Serial.print(msg);
-    Serial.println(*retryCounter);
-
-    if (Serial.find("ACK")) { // ACK ricevuto da HOST PC. resetto il contatore txRetryCounter
-      *retryCounter=0;
-      retval=true;
-    }
-    else {   // Il PC HOST non risponde. Incremento il contatore txRetryCounter
-      *retryCounter++;
-    }
-  }
-return retval;
-}
-
 
 
 /* funzione int TxBlocked():

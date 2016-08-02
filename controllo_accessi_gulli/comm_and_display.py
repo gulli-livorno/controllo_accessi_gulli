@@ -1,13 +1,28 @@
 #!/usr/bin/env  python
 # coding=utf-8
+
+#*********************Python module file header******************************
+__doc__="""comm_and_display.py: Script python che gira su Raspberrypi e viene chiamato
+come script CGI da un browser. Lo script accede alla porta  seriale al quale è collegato il modulo
+conta accessi basato su arduino. Viene trasmesso un comando su seriale al quale il modulo
+connesso risponde con il numero di ingressi ed uscite accumulato dopo l'ultima richiesta.
+Dopo aver ricevuto la stringa '[ingressi] [uscite]\n' viene spedito un ACK ed il modulo connesso
+resetta i contatori ingresso uscita"""
+__author__ = "Stefano Baldacci"
+__copyright__ = """Copyright information The content of this file is property of
+Stefano Baldacci.It cannot be used, copied, modified, transferred or disclosed
+without prior written agreement"""
+__license__ = "GPL"
+__email__ = "stefano.baldacci@gmail.com"
+__status__ = "Production"
+#History: (repeat the following line as many times as applicable)
+__version__ = "0.1 original"
+
+#******************************************************************************
+
+
 import serial,time
 import make_html
-
-# file per il salvataggio degli accessi
-log_file_name='accessi.log'
-
-# apro porta seriale per comunicazione con Arduino
-ser = serial.Serial('/dev/ttyUSB0',57600 , timeout=1)
 
 rx_buffer=" "
 rx_data=[0, 0]
@@ -15,6 +30,13 @@ status="OK"
 ingressi=0
 uscite=0
 timestamp=""
+
+# file per il salvataggio degli accessi
+log_file_name='accessi.log'
+
+# apro porta seriale per comunicazione con Arduino
+ser = serial.Serial('/dev/ttyUSB0',57600 , timeout=1)
+
 ser.flushInput()
 ser.flushOutput()
 #print(ser.name)
@@ -52,7 +74,6 @@ if(rx_buffer.find("\n")>=0): # se ho ricevuto senza timeout
 
 
     # aggiorno il file di log se necessario
-   # print("ingressi:uscite " + str(rx_data[0]) +":" + str(rx_data[1]))
     if(rx_data[0]!='0' or rx_data[1]!='0'):
     # aggiungo timestamp al file
         timestamp=time.strftime("%H:%M:%S-%d/%m/%Y ",time.localtime())
@@ -63,10 +84,16 @@ if(rx_buffer.find("\n")>=0): # se ho ricevuto senza timeout
 else:
     status="comm. error"
 
-ser.flushInput()
 ser.close()
-# creo file html per Display Controllo Accessi
+
+
+# creo file html per Display Controllo Accessi e lo stampo su stdout che poi verrà
+# interpretato dal browser
 make_html.MakeHTML(ingressi,uscite,status)
+
+# per debug
+'''
 #print("Ingressi= " + str(ingressi)+"\n")
 #print("Uscite= " + str(uscite) + "\n")
 #print("Status= " +  str(status) + "\n")
+'''
