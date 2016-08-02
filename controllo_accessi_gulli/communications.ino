@@ -7,7 +7,7 @@ __author__ = ""
 __copyright__ = "Informazioni di Copyright"
 __license__ = "GPL"
 __email__ = " "
-__status__ = "Development[X]";"Test[]";"Production[]";
+__status__ = "Development[]";"Test[X]";"Production[]";
 __History__: (repeat the following line as many times as applicable)
     __version__ = "0.1 original"
 ***************************************************************************
@@ -17,25 +17,6 @@ __History__: (repeat the following line as many times as applicable)
 
 //TODO
 /* implementare un modulo per la comunicazione con un PC connesso via seriale
-
-
-Il SW controllo accessi che gira su Arduino dovrebbe:
-
-1) comunicare al PC connesso
-quando c'è stato un passaggio attraverso la barriera in modo che il PC connesso possa
-aggiornare un display.
-
-2) comunicare al PC connesso
-se una barriera è bloccata in modo da generare un allarme audio/video
-
-3) rispondere a comandi dal PC connesso
-
-4) altre cose che ci vengono in mente . . . . .
-
-5) arduino spedisce "i"/"o" seguito da un numero incrementale fino  a che il PC non ha ricevuto e manda conferma con un messaggio
-ACK e quindi il contatore di arduino si resetta
-
-6) Meccanismo heartbeat: PC manda periodicamente un richiesta ad ARD. che risponde se è OK. Altrimenti PC manda allarme ARD. is dead !
 
 */
 
@@ -85,11 +66,11 @@ Ritorna un eventuale codice di errore/conferma
 */
 int ProcessSerialCommands(){
 byte retval=0;
-char cmdBuffer[]="   ";
+char cmdBuffer[]=" ";
 if (Serial.available()) {
 
-  Serial.readBytes(cmdBuffer, 3); // comandi di tre caratteri
-  if (strcmp(cmdBuffer,"RST")==0) { // reset counters
+  Serial.readBytes(cmdBuffer, 1); // comandi di un carattere
+  /* if (strcmp(cmdBuffer,"R")==0) { // reset counters
     contaIngressi=0;
     contaUscite=0;
     Serial.println("ACK");
@@ -98,18 +79,17 @@ if (Serial.available()) {
     Serial.println("ACK");
   }
 
-  if (strcmp(cmdBuffer,"XXX")==0) { //
-    /* code */
-  }
 
-  if (strcmp(cmdBuffer,"CNT")==0) { // Trasmetto i valori dei counters ingressi e uscite
+  */
+
+  if (strcmp(cmdBuffer,"C")==0) { // Trasmetto i valori dei counters ingressi e uscite
     // dopo la trasmissione   e ricezione ACK azzero i contatori
     digitalWrite(LED_SB_OUT,HIGH);
     Serial.print(contaIngressi);
     Serial.print(" ");
     Serial.print(contaUscite);
     Serial.print("\n");
-    if (Serial.find("ACK")) { // ACK ricevuto da HOST PC.
+    if (Serial.find("A")) { // ACK ricevuto da HOST PC.
       contaIngressi=0;
       contaUscite=0;
       retval=1;

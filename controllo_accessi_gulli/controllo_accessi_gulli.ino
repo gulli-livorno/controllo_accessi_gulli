@@ -38,8 +38,8 @@ String msg="";
 
 void setup()
 {
-Serial.begin(57600);
-Serial.setTimeout(10000);
+Serial.begin(115200);
+Serial.setTimeout(1000);
 pinMode(LED_SB_IN, OUTPUT);
 pinMode(LED_SB_OUT, OUTPUT);
 pinMode(SW_INGRESSO, INPUT_PULLUP);
@@ -74,6 +74,6 @@ if (digitalRead(SW_USCITA)==LOW) {
 //if(ProcessSerialCommands()) Serial.println("ACK received");
     //tone(11, 200, 100);
 ProcessSerialCommands();
-delay(200);
+delay(50);
 
 }
