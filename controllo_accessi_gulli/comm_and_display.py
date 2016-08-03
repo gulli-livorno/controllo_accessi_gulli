@@ -20,9 +20,11 @@ __version__ = "0.1 original"
 
 #******************************************************************************
 
-
-import serial,time
+import serial,time,sys
 import make_html
+
+# file per il salvataggio degli accessi
+log_file_name='accessi.log'
 
 rx_buffer=" "
 rx_data=[0, 0]
@@ -31,15 +33,6 @@ ingressi=0
 uscite=0
 timestamp=""
 
-# file per il salvataggio degli accessi
-log_file_name='accessi.log'
-
-# apro porta seriale per comunicazione con Arduino
-ser = serial.Serial('/dev/ttyUSB0',57600 , timeout=1)
-
-ser.flushInput()
-ser.flushOutput()
-#print(ser.name)
 
 # ricarico i valori dei contatori dal file di log. Il formato del file è: [timestamp] [Ingressi] [Uscite]
 with open(log_file_name,"a+") as logfile:
@@ -54,8 +47,24 @@ with open(log_file_name,"a+") as logfile:
 
 
 
+
+# apro porta seriale per comunicazione con Arduino
+try:
+	ser = serial.Serial('/dev/ttyUSB0',115200 , timeout=1)
+except serial.SerialException:
+	status="Serial Comm. Error"
+	make_html.MakeHTML(ingressi,uscite,status)
+	sys.exit(0)
+
+ser.flushInput()
+ser.flushOutput()
+#print(ser.name)
+
+
+
+
 # trasmetto comando CNT su seriale
-ser.write("CNT")
+ser.write("C")
 # ricevo da seriale
 rx_buffer=ser.readline()
 #rx_buffer=ser.read(5)
@@ -68,12 +77,13 @@ if(rx_buffer.find("\n")>=0): # se ho ricevuto senza timeout
         ingressi+=int(rx_data[0])
         uscite+=int(rx_data[1])
         # trasmetto  ACK su seriale
-        ser.write("ACK")
+        ser.write("A")
     except:
         status="comm. error"
 
 
     # aggiorno il file di log se necessario
+   # print("ingressi:uscite " + str(rx_data[0]) +":" + str(rx_data[1]))
     if(rx_data[0]!='0' or rx_data[1]!='0'):
     # aggiungo timestamp al file
         timestamp=time.strftime("%H:%M:%S-%d/%m/%Y ",time.localtime())
@@ -84,16 +94,10 @@ if(rx_buffer.find("\n")>=0): # se ho ricevuto senza timeout
 else:
     status="comm. error"
 
+#ser.flushInput()
 ser.close()
-
-
-# creo file html per Display Controllo Accessi e lo stampo su stdout che poi verrà
-# interpretato dal browser
+# creo file html per Display Controllo Accessi
 make_html.MakeHTML(ingressi,uscite,status)
-
-# per debug
-'''
 #print("Ingressi= " + str(ingressi)+"\n")
 #print("Uscite= " + str(uscite) + "\n")
 #print("Status= " +  str(status) + "\n")
-'''
