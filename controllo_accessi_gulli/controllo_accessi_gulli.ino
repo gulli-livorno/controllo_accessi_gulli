@@ -33,8 +33,8 @@ __History__: (repeat the following line as many times as applicable)
 #define SB_NONE  B00000000 // barriere libere
 
 // LED per eventi Ingresso e uscita
-#define LED_SB_INT 11
-#define LED_SB_EXT 12
+#define LED_SB_INT 7
+#define LED_SB_EXT 8
 
 //****************** global variables definition ******************
 byte sonarBarries=B00000000; // così composta -> [0 0 0 0 0 0 extSonar intSonar ]
@@ -59,9 +59,9 @@ String msg="";
 void setup()
 {
 Serial.begin(115200);
-pinMode(LED_SB_INT, OUTPUT);
-pinMode(LED_SB_EXT, OUTPUT);
-//tone(10, 200, 500);
+pinMode(7, OUTPUT);
+pinMode(8, OUTPUT);
+tone(10, 200, 500);
 }
 
 void loop()
@@ -69,9 +69,9 @@ void loop()
 
 
   bool BX=false;
-  digitalWrite(LED_SB_INT,LOW);
-  digitalWrite(LED_SB_EXT,LOW);
-  Serial.print(F("Ping Ext Sonar:"));
+  digitalWrite(7,LOW);
+  digitalWrite(8,LOW);
+  /*Serial.print(F("Ping Ext Sonar:"));
   Serial.print(ext_Sonar.ping_cm());
   Serial.print(F("  Ping Int Sonar:"));
   Serial.print(int_Sonar.ping_cm());
@@ -80,22 +80,22 @@ void loop()
   Serial.print(F("  Uscite="));
   Serial.print(contaUscite);
   Serial.print("\r");
-
+*/
   //Controllo INGRESSO
   if (IsBarrierCrossed(ext_Sonar,8,LARGHEZZA_VARCO*0.9,0.6)) {
     TTV_timer=millis(); //inizializzo timer
     delay(6);
-    while (! (IsBarrierCrossed(int_Sonar,8,LARGHEZZA_VARCO*0.9,0.6)||timeout)) { // attendo attraversamento barriera interna o timeout
+    while (! (IsBarrierCrossed(int_Sonar,5,LARGHEZZA_VARCO*0.9,0.6)||timeout)) { // attendo attraversamento barriera interna o timeout
       if (millis()-TTV_timer>TTV_DELAY) {
         timeout=true;
       }
     }
       if (! timeout) { // se sono uscito dal loop NON per timeout allora è un ingresso
         contaIngressi++;
-        digitalWrite(LED_SB_EXT,HIGH);
+        digitalWrite(8,HIGH);
       //  tone(11, 500, 500);
 
-        Serial.print(F("INGRESSO ->[]                                             "));
+  //      Serial.print(F("INGRESSO ->[]                                             "));
       }
   }
 
@@ -113,7 +113,7 @@ void loop()
   //Controllo INGRESSO
 
 
-  if (IsBarrierCrossed(int_Sonar,8,LARGHEZZA_VARCO*0.9,0.6)) {
+  if (IsBarrierCrossed(int_Sonar,5,LARGHEZZA_VARCO*0.9,0.6)) {
     TTV_timer=millis(); //inizializzo timer
     delay(6);
     while (! (IsBarrierCrossed(ext_Sonar,8,LARGHEZZA_VARCO*0.9,0.6)||timeout)) { // attendo attraversamento barriera externa o timeout
@@ -123,16 +123,18 @@ void loop()
     }
       if (! timeout) { // se sono uscito dal loop NON per timeout allora è una uscita
         contaUscite++;
-          digitalWrite(LED_SB_EXT,HIGH);
-          //tone(11, 200, 500);
+          digitalWrite(7,HIGH);
+      //    tone(11, 200, 500);
 
-        Serial.print(F("USCITA ->[]                                             "));
+    //    Serial.print(F("USCITA ->[]                                             "));
       }
   }
 
   timeout=false;
-  Serial.print("\r");
+//  Serial.print("\r");
 
+
+  ProcessSerialCommands();
   delay(10);
     //tone(11, 200, 100);
 

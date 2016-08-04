@@ -68,7 +68,7 @@ bool IsBarrierCrossed(NewPing sonar,int num_samples,int ref_distance,float margi
           barrier_crossed=true;
         } else {
           //barriera bloccata
-          Serial.println("Barriera bloccata >||<");
+          //Serial.println("Barriera bloccata >||<");
           }
       }
     }

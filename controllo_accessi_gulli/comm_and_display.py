@@ -19,7 +19,8 @@ __status__ = "Production"
 __version__ = "0.1 original"
 
 #******************************************************************************
-
+#!/usr/bin/env  python
+# coding=utf-8
 import serial,time,sys
 import make_html
 
@@ -50,7 +51,7 @@ with open(log_file_name,"a+") as logfile:
 
 # apro porta seriale per comunicazione con Arduino
 try:
-	ser = serial.Serial('/dev/ttyUSB0',115200 , timeout=1)
+	ser = serial.Serial('/dev/ttyUSB0',115200 , timeout=2)
 except serial.SerialException:
 	status="Serial Comm. Error"
 	make_html.MakeHTML(ingressi,uscite,status)
@@ -79,7 +80,7 @@ if(rx_buffer.find("\n")>=0): # se ho ricevuto senza timeout
         # trasmetto  ACK su seriale
         ser.write("A")
     except:
-        status="comm. error"
+        status="comm. error 1"
 
 
     # aggiorno il file di log se necessario
@@ -92,10 +93,11 @@ if(rx_buffer.find("\n")>=0): # se ho ricevuto senza timeout
             logfile.write(rx_buffer +"\n")
 
 else:
-    status="comm. error"
+    status="comm. error 2"
 
 #ser.flushInput()
 ser.close()
+status+=rx_buffer
 # creo file html per Display Controllo Accessi
 make_html.MakeHTML(ingressi,uscite,status)
 #print("Ingressi= " + str(ingressi)+"\n")
