@@ -44,7 +44,7 @@ with open(log_file_name,"a+") as logfile:
                     ingressi+=int(rx_data[1])
                     uscite+=int(rx_data[2])
                 except:
-                    status="log file error"
+                    status="Error reading log file"
 
 
 
@@ -53,7 +53,7 @@ with open(log_file_name,"a+") as logfile:
 try:
 	ser = serial.Serial('/dev/ttyUSB0',115200 , timeout=2)
 except serial.SerialException:
-	status="Serial Comm. Error"
+	status="Error opening serial port"
 	make_html.MakeHTML(ingressi,uscite,status)
 	sys.exit(0)
 
@@ -73,14 +73,13 @@ rx_buffer=ser.readline()
 if(rx_buffer.find("\n")>=0): # se ho ricevuto senza timeout
     try:
     #estraggo i valori  dalla stringa ricevuta ed aggiorno i contatori Ingressi/Uscite
-        #print("found !")
         rx_data=rx_buffer.split()
         ingressi+=int(rx_data[0])
         uscite+=int(rx_data[1])
         # trasmetto  ACK su seriale
         ser.write("A")
     except:
-        status="comm. error 1"
+        status="Error parsing serial rx buffer"
 
 
     # aggiorno il file di log se necessario
@@ -93,13 +92,14 @@ if(rx_buffer.find("\n")>=0): # se ho ricevuto senza timeout
             logfile.write(rx_buffer +"\n")
 
 else:
-    status="comm. error 2"
+    status="Error Arduino not responding"
 
-#ser.flushInput()
+ser.flushInput()
 ser.close()
-status+=rx_buffer
 # creo file html per Display Controllo Accessi
 make_html.MakeHTML(ingressi,uscite,status)
+
+
 #print("Ingressi= " + str(ingressi)+"\n")
 #print("Uscite= " + str(uscite) + "\n")
 #print("Status= " +  str(status) + "\n")

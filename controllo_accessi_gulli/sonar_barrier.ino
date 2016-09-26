@@ -37,6 +37,7 @@ float NormalizedSonarReading(NewPing sonar, byte num_samples,int ref_distance ) 
   }
   acc_dist=acc_dist/num_samples; //calcolo la media delle letture
   return acc_dist/ref_distance; // normalizzo rispetto alla lettura di riferimento iniziale
+
 }
 
 /* bool IsBarrierCrossed(NewPing sonar,int num_samples,int ref_distance,float margin):
@@ -59,13 +60,29 @@ bool IsBarrierCrossed(NewPing sonar,int num_samples,int ref_distance,float margi
 
   bool barrier_crossed=false;
 
-    if (NormalizedSonarReading(sonar, num_samples, ref_distance) < margin) { // stimo validità interruzione
+      float nsr=NormalizedSonarReading(sonar, num_samples, ref_distance);
+      #ifdef DEBUG
+      Serial.print("NSR= ");
+      Serial.println(nsr);
+      #endif
+    if (nsr < margin) { // stimo validità interruzione
       //interruzione valida
-
+      #ifdef DEBUG
+      Serial.print("Barriera interrotta ");
+      #endif
       while (! barrier_crossed) { // attendo riapertura barriera
+
+        nsr=NormalizedSonarReading(sonar, num_samples, ref_distance);
+        #ifdef DEBUG
+        Serial.print("NSR_BI= ");
+        Serial.println(nsr);
+        #endif
         if (NormalizedSonarReading(sonar, num_samples, ref_distance) > margin) { // stimo validità barriera aperta
           //barriera aperta
           barrier_crossed=true;
+          #ifdef DEBUG
+          Serial.print("Barriera attraversata ");
+           #endif
         } else {
           //barriera bloccata
           //Serial.println("Barriera bloccata >||<");

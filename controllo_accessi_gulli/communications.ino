@@ -62,7 +62,7 @@ if (Serial.available()) {
 
   if (strcmp(cmdBuffer,"C")==0) { // Trasmetto i valori dei counters ingressi e uscite
     // dopo la trasmissione   e ricezione ACK azzero i contatori
-    digitalWrite(LED_SB_EXT,HIGH);
+    digitalWrite(LED_SERIAL,HIGH);
     Serial.print(contaIngressi);
     Serial.print(" ");
     Serial.print(contaUscite);
