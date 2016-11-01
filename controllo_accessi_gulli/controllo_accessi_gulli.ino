@@ -8,9 +8,9 @@ __copyright__ = "Informazioni di Copyright"
 __license__ = "GPL"
 __email__ = "stefano.baldacci@gmail.com"
 __STATUS__ = "Development[]";"Test[]";"Production[X]";
-__branch__= Master (SHA1) 
+__branch__= Master (SHA1) 0f5236217f7b935dd5410bc6705a385af1dcf3e0
 __History__: (repeat the following line as many times as applicable)
-__version__ = "1.0 original"
+__version__ = "1.0 Linux Day 2016"
 ***************************************************************************
 */
 

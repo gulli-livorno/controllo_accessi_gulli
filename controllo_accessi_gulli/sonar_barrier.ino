@@ -8,7 +8,7 @@ __license__ = "GPL"
 __email__ = "stefano.baldacci@gmail.com"
 __status__ = "Development[X]";"Test[]";"Production[]";
 __History__: (repeat the following line as many times as applicable)
-    __version__ = "0.1 original"
+    __version__ = "1.0 Linux Day 2016"
 ***************************************************************************
 */
 

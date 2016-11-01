@@ -16,11 +16,11 @@ __license__ = "GPL"
 __email__ = "stefano.baldacci@gmail.com"
 __status__ = "Production"
 #History: (repeat the following line as many times as applicable)
-__version__ = "0.1 original"
+__version__ = "1.0 Linux Day 2016"
 
 #******************************************************************************
-#!/usr/bin/env  python
-# coding=utf-8
+
+
 import serial,time,sys
 import make_html
 
@@ -44,19 +44,22 @@ with open(log_file_name,"a+") as logfile:
                     ingressi+=int(rx_data[1])
                     uscite+=int(rx_data[2])
                 except:
-                    status="Error reading log file"
+                    status="log file error"
 
 
 
 
 # apro porta seriale per comunicazione con Arduino
+# uso ttyAMA0 per collegamenti diretti su PIN UART.
+#                      attenzione lavorano a 3.3 V
+# uso ttyUSB0 per collegameneti via seriale simulata su  USB
 try:
-	ser = serial.Serial('/dev/ttyUSB0',115200 , timeout=2)
+	ser = serial.Serial('/dev/ttyUSB0',115200 , timeout=5)
 except serial.SerialException:
-	status="Error opening serial port"
+	status="Serial Comm. Error"
 	make_html.MakeHTML(ingressi,uscite,status)
 	sys.exit(0)
-
+time.sleep(1)
 ser.flushInput()
 ser.flushOutput()
 #print(ser.name)
@@ -73,13 +76,14 @@ rx_buffer=ser.readline()
 if(rx_buffer.find("\n")>=0): # se ho ricevuto senza timeout
     try:
     #estraggo i valori  dalla stringa ricevuta ed aggiorno i contatori Ingressi/Uscite
+        #print("found !")
         rx_data=rx_buffer.split()
         ingressi+=int(rx_data[0])
         uscite+=int(rx_data[1])
         # trasmetto  ACK su seriale
         ser.write("A")
     except:
-        status="Error parsing serial rx buffer"
+        status="comm. error 1"
 
 
     # aggiorno il file di log se necessario
@@ -92,14 +96,13 @@ if(rx_buffer.find("\n")>=0): # se ho ricevuto senza timeout
             logfile.write(rx_buffer +"\n")
 
 else:
-    status="Error Arduino not responding"
+    status="comm. error 2"
 
-ser.flushInput()
+#ser.flushInput()
 ser.close()
+#status+=rx_buffer
 # creo file html per Display Controllo Accessi
 make_html.MakeHTML(ingressi,uscite,status)
-
-
 #print("Ingressi= " + str(ingressi)+"\n")
 #print("Uscite= " + str(uscite) + "\n")
 #print("Status= " +  str(status) + "\n")

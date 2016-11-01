@@ -9,7 +9,7 @@ __license__ = "GPL"
 __email__ = " "
 __status__ = "Development[]";"Test[X]";"Production[]";
 __History__: (repeat the following line as many times as applicable)
-    __version__ = "0.1 original"
+    __version__ = "1.0 Linux Day 2016"
 ***************************************************************************
 */
 
