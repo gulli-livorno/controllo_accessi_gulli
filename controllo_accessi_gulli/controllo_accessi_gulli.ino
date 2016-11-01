@@ -1,25 +1,26 @@
 /*
  *********************Arduino Source File Header**************************
 __file_name__ = controllo_accessi_gulli.ino
-__description__="Modulo per la prova delle funzionalità dei sensori sonar
-e la liberria NewPing "
+__description__="Modulo principale per la gestione delle barriere sonar
+ed la comunicazione seriale con un dispositivo esterno (Raspeberry PI) "
 __author__ = "Stefano Baldacci"
 __copyright__ = "Informazioni di Copyright"
 __license__ = "GPL"
 __email__ = "stefano.baldacci@gmail.com"
-__STATUS__ = "Development[]";"Test[X]";"Production[]";
-__branch__= test_SM (SHA1) àà
+__STATUS__ = "Development[]";"Test[]";"Production[X]";
+__branch__= Master (SHA1) 
 __History__: (repeat the following line as many times as applicable)
-    __version__ = "0.1 original"
+__version__ = "1.0 original"
 ***************************************************************************
 */
 
 
 //#define DEBUG
+//#define TESTSONAR
+
 
 //#include "Arduino.h" // libreria per compatibilita con PlatformIO. Vedi www.platformio.org
 #include <NewPing.h> // libreria per gestione moduli Sonar HC-SR04
-#include <avr/wdt.h>      // Watchdog timer
 
 //****************** global variables definition ******************
 // Collegamenti moduli Sonar
@@ -63,12 +64,17 @@ String msg="";
 
 void setup()
 {
+
 Serial.begin(115200);
 Serial.setTimeout(2000);
 pinMode(LED_USCITA, OUTPUT);
 pinMode(LED_INGRESSO, OUTPUT);
 pinMode(BUZZER, OUTPUT);
-//tone(10, 200, 500);
+tone(BUZZER, 1500, 100);
+delay(250);
+tone(BUZZER, 500, 300);
+
+
 }
 
 void loop()
@@ -77,16 +83,8 @@ void loop()
   digitalWrite(LED_USCITA,LOW);
   digitalWrite(LED_INGRESSO,LOW);
   digitalWrite(LED_SERIAL,LOW);
-/*Serial.print(F("Ping Ext Sonar:"));
-  Serial.print(ext_Sonar.ping_cm());
-  Serial.print(F("  Ping Int Sonar:"));
-  Serial.print(int_Sonar.ping_cm());
-  Serial.print(F("    Ingressi="));
-  Serial.print(contaIngressi);
-  Serial.print(F("  Uscite="));
-  Serial.print(contaUscite);
-  Serial.print("\r");
-*/
+
+
 
   //Controllo INGRESSO
   #ifdef DEBUG
@@ -107,15 +105,11 @@ void loop()
         contaIngressi++;
         digitalWrite(LED_INGRESSO,HIGH);
         tone(BUZZER, 1000, 100);
-      //  Serial.print(F("INGRESSO ->[]                                             "));
       }
   }
 
 
-//delay per esaurire echo sonar
-//delay(10);
-
-  // Controllo USCITA
+  //Controllo USCITA
   #ifdef DEBUG
   Serial.println("Uscita INT SONAR");
   #endif
@@ -134,12 +128,10 @@ void loop()
         contaUscite++;
           digitalWrite(LED_USCITA,HIGH);
           tone(BUZZER, 250, 100);
-      //    Serial.print(F("USCITA ->[]                                             "));
       }
   }
 
   timeout=false;
-//  Serial.print("\r");
 
 // Controllo porta seriale per gestire collegamento seriale con Raspberrypi
   ProcessSerialCommands();
@@ -147,25 +139,21 @@ void loop()
 
 
 
- // ************************ TEST ***************************
-/*
+#ifdef TESTSONAR
 msg=TestSonarModule(ext_Sonar,millis());
 msg="EXT: " + msg;
 Serial.println(msg);
-nsr=NormalizedSonarReading(ext_Sonar, 5, 100);
-Serial.print("EXT NSR= ");
-Serial.println(nsr);
-
-
+//nsr=NormalizedSonarReading(ext_Sonar, 5, 100);
+//Serial.print("EXT NSR= ");
+//Serial.println(nsr);
 msg=TestSonarModule(int_Sonar,millis());
 msg="INT: " + msg;
 Serial.println(msg);
-nsr=NormalizedSonarReading(int_Sonar, 5, 100);
-Serial.print("INT NSR= ");
-Serial.println(nsr);
+//nsr=NormalizedSonarReading(int_Sonar, 5, 100);
+//Serial.print("INT NSR= ");
+//Serial.println(nsr);
 delay(100);
-*/
-//  ************************ TEST ************************** */
+#endif
 
 
 }
